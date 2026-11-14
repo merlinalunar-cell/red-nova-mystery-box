@@ -1,0 +1,42 @@
+
+const accessCode = document.getElementById('accessCode');
+const validateBtn = document.getElementById('validateBtn');
+const openBox = document.getElementById('openBox');
+const codeMessage = document.getElementById('codeMessage');
+const boxInstruction = document.getElementById('boxInstruction');
+const result = document.getElementById('result');
+
+validateBtn.addEventListener('click', () => {
+  const code = accessCode.value.trim();
+
+  if (!code) {
+    codeMessage.textContent = 'Ingresá tu código para continuar.';
+    accessCode.focus();
+    return;
+  }
+
+  codeMessage.textContent =
+    'La validación segura se configurará al conectar la base de datos.';
+  openBox.disabled = true;
+  boxInstruction.textContent =
+    'Próximamente podrás abrir tu Mystery Box.';
+});
+
+openBox.addEventListener('click', () => {
+  if (openBox.disabled) return;
+
+  openBox.classList.remove('opening');
+  void openBox.offsetWidth;
+  openBox.classList.add('opening');
+  result.classList.add('show');
+});
+
+const panelDialog = document.getElementById('panelDialog');
+
+document.getElementById('panelBtn').addEventListener('click', () => {
+  panelDialog.showModal();
+});
+
+document.getElementById('closePanel').addEventListener('click', () => {
+  panelDialog.close();
+});
