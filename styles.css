@@ -229,3 +229,42 @@ dialog{width:min(90%,420px);border:1px solid #4ceaff;border-radius:18px;backgrou
   object-fit: contain !important;
   display: block;
 }
+/* ===== MONTOS DE PREMIOS RED NOVA ===== */
+
+.prize-amount {
+  margin: 8px 0 20px;
+  color: #ffe08a;
+  font-family: Orbitron, sans-serif;
+  font-size: clamp(25px, 4vw, 34px);
+  font-weight: 900;
+  letter-spacing: -1px;
+  text-shadow:
+    0 0 5px #fff2b0,
+    0 0 12px #ffc400,
+    0 0 25px #ff9d00;
+  animation: goldPrizeGlow 2s ease-in-out infinite;
+}
+
+@keyframes goldPrizeGlow {
+  0%, 100% {
+    filter: brightness(1);
+    transform: scale(1);
+  }
+  50% {
+    filter: brightness(1.3);
+    transform: scale(1.04);
+  }
+}
+
+.prize-card h3 {
+  color: #8defff;
+  font-family: Orbitron, sans-serif;
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  text-shadow: 0 0 12px #00cfff88;
+}
+
+.prize-card .whatsapp-cta {
+  min-height: 58px;
+}
