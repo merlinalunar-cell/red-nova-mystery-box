@@ -215,3 +215,17 @@ dialog{width:min(90%,420px);border:1px solid #4ceaff;border-radius:18px;backgrou
     bottom: 15px;
   }
 }
+/* IMÁGENES COMPLETAS DE LOS PREMIOS */
+.prize-image {
+  height: auto !important;
+  aspect-ratio: 9 / 16;
+  background: #020817;
+  overflow: hidden;
+}
+
+.prize-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain !important;
+  display: block;
+}
