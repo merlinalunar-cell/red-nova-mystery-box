@@ -1,3 +1,4 @@
+
 const accessCode = document.getElementById("accessCode");
 const validateBtn = document.getElementById("validateBtn");
 const openBox = document.getElementById("openBox");
@@ -7,6 +8,51 @@ const result = document.getElementById("result");
 
 let validatedCode = "";
 let openingInProgress = false;
+
+// WHATSAPP AUTOMÁTICO SEGÚN HORARIO DE ARGENTINA
+const WHATSAPP_DIA = "5491151819514"; 
+const WHATSAPP_NOCHE = "5492224576844";
+
+function obtenerWhatsApp() {
+  const horaArgentina = Number(
+    new Intl.DateTimeFormat("es-AR", {
+      timeZone: "America/Argentina/Buenos_Aires",
+      hour: "2-digit",
+      hourCycle: "h23"
+    }).format(new Date())
+  );
+
+  return horaArgentina >= 6 && horaArgentina < 14
+    ? WHATSAPP_DIA
+    : WHATSAPP_NOCHE;
+}
+
+function conectarWhatsApp() {
+  document.querySelectorAll(".whatsapp-cta").forEach((boton) => {
+    const mensaje = boton.dataset.message ||
+      "¡Hola RED NOVA! Quiero información.";
+
+    boton.href =
+      "https://wa.me/" + obtenerWhatsApp() +
+      "?text=" + encodeURIComponent(mensaje);
+
+    boton.target = "_blank";
+    boton.rel = "noopener noreferrer";
+  });
+
+  const flotante = document.getElementById("floatingWhatsapp");
+
+  if (flotante) {
+    flotante.href =
+      "https://wa.me/" + obtenerWhatsApp() +
+      "?text=" + encodeURIComponent("¡Hola RED NOVA! Quiero información.");
+
+    flotante.target = "_blank";
+    flotante.rel = "noopener noreferrer";
+  }
+}
+
+conectarWhatsApp();
 
 // VALIDAR CÓDIGO
 validateBtn.addEventListener("click", async () => {
@@ -44,6 +90,7 @@ validateBtn.addEventListener("click", async () => {
     codeMessage.textContent = "¡Código válido! Ya podés abrir tu caja.";
     boxInstruction.textContent = "¡Tu sorpresa está lista!";
     openBox.disabled = false;
+    openBox.classList.add("enabled");
 
   } catch (error) {
     codeMessage.textContent =
@@ -57,6 +104,7 @@ validateBtn.addEventListener("click", async () => {
 accessCode.addEventListener("input", () => {
   validatedCode = "";
   openBox.disabled = true;
+  openBox.classList.remove("enabled");
   result.classList.remove("show");
   codeMessage.textContent = "Validá nuevamente tu código.";
   boxInstruction.textContent = "Primero ingresá y validá tu código.";
