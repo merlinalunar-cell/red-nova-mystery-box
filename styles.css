@@ -14,3 +14,204 @@ footer{padding:35px 15px;text-align:center;border-top:1px solid #39dfff33;backgr
 dialog{width:min(90%,420px);border:1px solid #4ceaff;border-radius:18px;background:#061a43;color:white;padding:35px;text-align:center;box-shadow:0 0 45px #00aaff66}dialog::backdrop{background:#000b}dialog h2{font:800 22px Orbitron}.dialog-crown{font-size:38px;color:var(--gold)}.dialog-close{position:absolute;right:12px;top:8px;border:0;background:none;color:white;font-size:28px;cursor:pointer}
 @keyframes float{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-18px) rotate(8deg)}}@keyframes chestFloat{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-13px) rotate(1deg)}}@keyframes flicker{0%,90%,100%{opacity:.25}92%,96%{opacity:1}}@keyframes buttonGlow{0%,100%{box-shadow:0 0 10px #00d9ff,0 0 24px #007bff77}50%{box-shadow:0 0 20px #00eaff,0 0 45px #007bff}}@keyframes openBox{0%{transform:scale(1) rotate(0)}35%{transform:scale(1.12) rotate(-7deg)}70%{transform:scale(.94) rotate(7deg)}100%{transform:scale(1) rotate(0)}}@keyframes reveal{from{opacity:0;transform:translateY(15px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}
 @media(max-width:760px){.topbar{padding:15px 5%;align-items:flex-start;gap:15px}.topbar nav{gap:10px;flex-wrap:wrap;justify-content:flex-end}.topbar nav a,.nav-panel{font-size:11px}.brand{font-size:15px;white-space:nowrap}.crown{font-size:21px}.hero{grid-template-columns:1fr;padding-top:48px;text-align:center;gap:0}.hero h1{letter-spacing:-3px}.hero-art{height:390px;order:2}.trust-row{justify-content:center}.feature-strip{margin:0 5% 60px;grid-template-columns:1fr;padding:20px}.feature-strip article{justify-content:center}.steps{grid-template-columns:1fr}.code-entry{flex-direction:column}.code-entry button{padding:14px}.boxes-section,.how-section{padding-bottom:65px}.orbit{width:310px}.treasure{transform:scale(.88)}.gift-a{right:3%}.gem-a{left:2%}}
+/* ===== RED NOVA: PREMIOS DESTACADOS ===== */
+
+.prizes-section {
+  position: relative;
+  max-width: 1150px;
+  margin: 0 auto;
+  padding: 55px 5% 90px;
+  text-align: center;
+}
+
+.prizes-section h2,
+.nova-invitation h2 {
+  font: 900 clamp(27px, 5vw, 43px) Orbitron, sans-serif;
+  margin: 14px 0;
+  text-shadow: 0 0 20px #00bfff66;
+}
+
+.prizes-section h2 span,
+.nova-invitation h2 span {
+  color: var(--cyan);
+}
+
+.prize-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+  margin-top: 38px;
+}
+
+.prize-card {
+  min-width: 0;
+  padding: 13px;
+  border: 1px solid #39dfff77;
+  border-radius: 19px;
+  background: linear-gradient(145deg, #09285d, #04132f);
+  box-shadow: 0 0 22px #008cff33, inset 0 0 18px #35eaff0b;
+  transition: transform .3s, box-shadow .3s;
+  animation: prizePulse 3s ease-in-out infinite;
+}
+
+.prize-card:nth-child(2) {
+  animation-delay: .7s;
+}
+
+.prize-card:nth-child(3) {
+  animation-delay: 1.4s;
+}
+
+.prize-card:hover {
+  transform: translateY(-9px) scale(1.02);
+  box-shadow: 0 0 32px #00dfff88;
+}
+
+.prize-image {
+  position: relative;
+  height: 220px;
+  overflow: hidden;
+  border-radius: 13px;
+  border: 1px solid #54eaff88;
+  background: radial-gradient(circle, #0877c9, #03112d);
+}
+
+.prize-image img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.prize-number {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  padding: 7px 10px;
+  border: 1px solid #8df5ff;
+  border-radius: 20px;
+  background: #031b48dd;
+  color: #a9faff;
+  font: 800 10px Orbitron, sans-serif;
+}
+
+.prize-card h3 {
+  min-height: 38px;
+  margin: 17px 5px 14px;
+  color: #e9fbff;
+  font: 800 12px Orbitron, sans-serif;
+  line-height: 1.6;
+}
+
+.whatsapp-cta {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 52px;
+  padding: 13px 15px;
+  border: 1px solid #b8ffff;
+  border-radius: 12px;
+  background: linear-gradient(110deg, #baffff, #16c8ff 50%, #0871ff);
+  color: #00183d;
+  text-decoration: none;
+  font: 900 11px Orbitron, sans-serif;
+  line-height: 1.5;
+  box-shadow: 0 0 12px #00d9ff, 0 0 25px #007bff77;
+  animation: buttonGlow 2.2s infinite;
+  transition: transform .2s;
+}
+
+.whatsapp-cta:hover {
+  transform: scale(1.04);
+}
+
+.nova-invitation {
+  position: relative;
+  max-width: 780px;
+  margin: 65px auto 0;
+  padding: 40px 25px;
+  overflow: hidden;
+  border: 1px solid #45eaff99;
+  border-radius: 22px;
+  background: linear-gradient(130deg, #082d68, #041331);
+  box-shadow: 0 0 35px #007bff44;
+}
+
+.nova-invitation p:not(.eyebrow) {
+  color: #b9dff7;
+  line-height: 1.6;
+}
+
+.invitation-gem {
+  font-size: 48px;
+  filter: drop-shadow(0 0 16px #00dfff);
+  animation: float 3s ease-in-out infinite;
+}
+
+.main-whatsapp {
+  max-width: 390px;
+  margin: 25px auto 0;
+  min-height: 60px;
+  font-size: 13px;
+}
+
+.floating-whatsapp {
+  position: fixed;
+  z-index: 20;
+  right: 20px;
+  bottom: 22px;
+  width: 62px;
+  height: 62px;
+  display: grid;
+  place-items: center;
+  border: 2px solid #baffff;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #baffff, #00aaff, #075dff);
+  color: #00183d;
+  text-decoration: none;
+  font-size: 37px;
+  font-weight: 900;
+  box-shadow: 0 0 15px #00eaff, 0 0 35px #007bff;
+  animation: buttonGlow 2s infinite;
+}
+
+@keyframes prizePulse {
+  0%, 100% {
+    box-shadow: 0 0 15px #008cff33;
+  }
+  50% {
+    box-shadow: 0 0 28px #00dfff66;
+  }
+}
+
+@media(max-width:760px) {
+  .prize-grid {
+    grid-template-columns: 1fr;
+    max-width: 430px;
+    margin: 30px auto 0;
+    gap: 25px;
+  }
+
+  .prize-image {
+    height: 250px;
+  }
+
+  .prize-card {
+    padding: 14px;
+  }
+
+  .prize-card h3 {
+    font-size: 13px;
+  }
+
+  .nova-invitation {
+    padding: 32px 18px;
+  }
+
+  .floating-whatsapp {
+    width: 56px;
+    height: 56px;
+    right: 14px;
+    bottom: 15px;
+  }
+}
