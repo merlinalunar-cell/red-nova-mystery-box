@@ -1,25 +1,34 @@
-
 <!doctype html>
 <html lang="es">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#03153c">
+  <meta name="description" content="RED NOVA - Dónde nacen los ganadores">
   <title>RED NOVA | Dónde nacen los ganadores</title>
   <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
+
   <div class="sky" aria-hidden="true">
-    <span class="bolt bolt-one">ϟ</span><span class="bolt bolt-two">ϟ</span>
-    <span class="particle p1">✦</span><span class="particle p2">◆</span>
-    <span class="particle p3">✧</span><span class="particle p4">◆</span>
-    <span class="particle p5">✦</span><span class="particle p6">✧</span>
+    <span class="bolt bolt-one">ϟ</span>
+    <span class="bolt bolt-two">ϟ</span>
+    <span class="particle p1">✦</span>
+    <span class="particle p2">◆</span>
+    <span class="particle p3">✧</span>
+    <span class="particle p4">◆</span>
+    <span class="particle p5">✦</span>
+    <span class="particle p6">✧</span>
   </div>
 
+  <!-- ENCABEZADO -->
   <header class="topbar">
-    <a class="brand" href="#inicio">
-      <span class="crown">♛</span><span>RED <b>NOVA</b></span>
+    <a class="brand" href="#inicio" aria-label="RED NOVA inicio">
+      <span class="crown">♛</span>
+      <span>RED <b>NOVA</b></span>
     </a>
+
     <nav>
       <a href="#inicio">Inicio</a>
       <a href="#premios">Premios</a>
@@ -30,13 +39,28 @@
   </header>
 
   <main id="inicio">
+
+    <!-- PORTADA -->
     <section class="hero">
+
       <div class="hero-copy">
-        <p class="eyebrow"><span></span> UNA EXPERIENCIA EXTRAORDINARIA</p>
+        <p class="eyebrow">
+          <span></span> UNA EXPERIENCIA EXTRAORDINARIA
+        </p>
+
         <h1>RED <span>NOVA</span></h1>
+
         <p class="tagline">DÓNDE NACEN LOS GANADORES</p>
-        <p class="intro">Una sorpresa te está esperando.<br>¿Te animás a descubrirla?</p>
-        <a class="primary-btn" href="#cajas">DESCUBRIR MYSTERY BOX <span>➜</span></a>
+
+        <p class="intro">
+          Una sorpresa te está esperando.<br>
+          ¿Te animás a descubrirla?
+        </p>
+
+        <a class="primary-btn" href="#premios">
+          DESCUBRIR PREMIOS <span>➜</span>
+        </a>
+
         <div class="trust-row">
           <span>✦ Experiencia interactiva</span>
           <span>✦ Sorpresas especiales</span>
@@ -44,141 +68,354 @@
       </div>
 
       <div class="hero-art">
-        <div class="orbit orbit-a"></div><div class="orbit orbit-b"></div>
-        <div class="gem gem-a">◆</div><div class="gem gem-b">✧</div>
+        <div class="orbit orbit-a"></div>
+        <div class="orbit orbit-b"></div>
+
+        <div class="gem gem-a">◆</div>
+        <div class="gem gem-b">✧</div>
+
         <div class="treasure" id="treasure">
           <div class="treasure-glow"></div>
           <div class="lid"><span>✦</span></div>
-          <div class="chest-front"><span class="chest-star">✦</span><b>?</b></div>
+          <div class="chest-front">
+            <span class="chest-star">✦</span>
+            <b>?</b>
+          </div>
           <div class="chest-base"></div>
         </div>
+
         <div class="floating-gift gift-a">🎁</div>
         <div class="floating-gift gift-b">💎</div>
         <div class="floating-gift gift-c">🪙</div>
-        <div class="art-caption">TU PRÓXIMA SORPRESA<br><b>ESTÁ MÁS CERCA</b></div>
+
+        <div class="art-caption">
+          TU PRÓXIMA SORPRESA<br>
+          <b>ESTÁ MÁS CERCA</b>
+        </div>
       </div>
+
     </section>
 
-    <section class="feature-strip" id="premios">
-      <article><span>♛</span><div><b>PREMIOS</b><small>Sorpresas por descubrir</small></div></article>
-      <article><span>⚡</span><div><b>ACCESO CON CÓDIGO</b><small>Ingresá tu código único</small></div></article>
-      <article><span>💎</span><div><b>EMOCIÓN</b><small>Cada caja es una sorpresa</small></div></article>
+    <!-- FRANJA INFORMATIVA -->
+    <section class="feature-strip">
+      <article>
+        <span>♛</span>
+        <div>
+          <b>PREMIOS</b>
+          <small>Sorpresas por descubrir</small>
+        </div>
+      </article>
+
+      <article>
+        <span>⚡</span>
+        <div>
+          <b>ACCESO CON CÓDIGO</b>
+          <small>Ingresá tu código único</small>
+        </div>
+      </article>
+
+      <article>
+        <span>💎</span>
+        <div>
+          <b>EMOCIÓN</b>
+          <small>Cada caja es una sorpresa</small>
+        </div>
+      </article>
     </section>
 
     <!-- PREMIOS DESTACADOS -->
-    <section class="prizes-section">
-      <p class="eyebrow centered">MIRÁ LO QUE PODÉS GANAR</p>
-      <h2>PREMIOS <span>DESTACADOS</span></h2>
-      <p class="section-lead">Tu próxima sorpresa podría estar acá.</p>
+    <section class="prizes-section" id="premios">
+
+      <p class="eyebrow centered">
+        MIRÁ LO QUE PODÉS GANAR
+      </p>
+
+      <h2>
+        PREMIOS <span>DESTACADOS</span>
+      </h2>
+
+      <p class="section-lead">
+        Grandes premios, grandes sorpresas.
+      </p>
 
       <div class="prize-grid">
+
+        <!-- PREMIO 1 -->
         <article class="prize-card">
+
           <div class="prize-image">
-            <img src="assets/premio-1.jpg" alt="Premio destacado 1">
+            <img
+              src="assets/premio-1.jpg"
+              alt="Premio The Crypt"
+              loading="lazy">
             <span class="prize-number">PREMIO 01</span>
           </div>
-          <h3>¡ESTE PREMIO PUEDE SER TUYO!</h3>
-          <a href="#" class="whatsapp-cta"
-             data-message="¡Hola RED NOVA! Quiero ganar un premio como este.">
+
+          <h3>THE CRYPT</h3>
+
+          <p class="prize-amount">$748.150</p>
+
+          <a
+            href="#"
+            class="whatsapp-cta"
+            data-message="¡Hola RED NOVA! Quiero ganar un premio como este: THE CRYPT.">
+
             QUIERO GANAR UN PREMIO COMO ESTE
+
           </a>
+
         </article>
 
+        <!-- PREMIO 2 -->
         <article class="prize-card">
+
           <div class="prize-image">
-            <img src="assets/premio-2.jpg" alt="Premio destacado 2">
+            <img
+              src="assets/premio-2.jpg"
+              alt="Premio Thunder and Love"
+              loading="lazy">
             <span class="prize-number">PREMIO 02</span>
           </div>
-          <h3>¡VOS PODÉS SER EL PRÓXIMO!</h3>
-          <a href="#" class="whatsapp-cta"
-             data-message="¡Hola RED NOVA! Quiero ganar un premio como este.">
+
+          <h3>THUNDER AND LOVE</h3>
+
+          <p class="prize-amount">$336.400</p>
+
+          <a
+            href="#"
+            class="whatsapp-cta"
+            data-message="¡Hola RED NOVA! Quiero ganar un premio como este: THUNDER AND LOVE.">
+
             QUIERO GANAR UN PREMIO COMO ESTE
+
           </a>
+
         </article>
 
+        <!-- PREMIO 3 -->
         <article class="prize-card">
+
           <div class="prize-image">
-            <img src="assets/premio-3.jpg" alt="Premio destacado 3">
+            <img
+              src="assets/premio-3.jpg"
+              alt="Premio Moon Girls"
+              loading="lazy">
             <span class="prize-number">PREMIO 03</span>
           </div>
-          <h3>LA SUERTE TE PUEDE SORPRENDER</h3>
-          <a href="#" class="whatsapp-cta"
-             data-message="¡Hola RED NOVA! Quiero ganar un premio como este.">
+
+          <h3>MOON GIRLS</h3>
+
+          <p class="prize-amount">$1.298.400</p>
+
+          <a
+            href="#"
+            class="whatsapp-cta"
+            data-message="¡Hola RED NOVA! Quiero ganar un premio como este: MOON GIRLS.">
+
             QUIERO GANAR UN PREMIO COMO ESTE
+
           </a>
+
         </article>
+
       </div>
 
+      <!-- INVITACIÓN RED NOVA -->
       <div class="nova-invitation">
+
         <div class="invitation-gem">💎</div>
-        <p class="eyebrow centered">TU MOMENTO PUEDE SER AHORA</p>
-        <h2>¿ESTÁS LISTO PARA <span>GANAR?</span></h2>
-        <p>Contactanos y descubrí todo lo que RED NOVA tiene preparado.</p>
-        <a href="#" class="whatsapp-cta main-whatsapp"
-           data-message="¡Hola RED NOVA! Quiero ganar en RED NOVA.">
+
+        <p class="eyebrow centered">
+          TU MOMENTO PUEDE SER AHORA
+        </p>
+
+        <h2>
+          ¿ESTÁS LISTO PARA <span>GANAR?</span>
+        </h2>
+
+        <p>
+          Contactanos y descubrí todo lo que RED NOVA tiene preparado.
+        </p>
+
+        <a
+          href="#"
+          class="whatsapp-cta main-whatsapp"
+          data-message="¡Hola RED NOVA! Quiero ganar en RED NOVA.">
+
           QUIERO GANAR EN RED NOVA
+
         </a>
+
       </div>
+
     </section>
 
+    <!-- MYSTERY BOX -->
     <section class="boxes-section" id="cajas">
-      <p class="eyebrow centered">EL MOMENTO QUE ESTABAS ESPERANDO</p>
-      <h2>Elegí tu <span>MYSTERY BOX</span></h2>
-      <p class="section-lead">Ingresá tu código para habilitar la apertura de tu caja.</p>
+
+      <p class="eyebrow centered">
+        EL MOMENTO QUE ESTABAS ESPERANDO
+      </p>
+
+      <h2>
+        Elegí tu <span>MYSTERY BOX</span>
+      </h2>
+
+      <p class="section-lead">
+        Ingresá tu código para habilitar la apertura de tu caja.
+      </p>
 
       <div class="code-card">
-        <label for="accessCode">TU CÓDIGO DE ACCESO</label>
+
+        <label for="accessCode">
+          TU CÓDIGO DE ACCESO
+        </label>
+
         <div class="code-entry">
-          <input id="accessCode" type="text" placeholder="Ej.: NOVA-XXXX" autocomplete="off">
-          <button id="validateBtn">VALIDAR CÓDIGO</button>
+
+          <input
+            id="accessCode"
+            type="text"
+            placeholder="Ej.: NOVA-XXXX"
+            autocomplete="off">
+
+          <button id="validateBtn">
+            VALIDAR CÓDIGO
+          </button>
+
         </div>
-        <p class="hint" id="codeMessage">Ingresá tu código para continuar.</p>
+
+        <p class="hint" id="codeMessage">
+          Ingresá tu código para continuar.
+        </p>
+
       </div>
 
       <div class="box-choice">
-        <button class="mystery-box" id="openBox" aria-label="Abrir Mystery Box" disabled>
-          <span class="box-aura"></span><span class="box-lid"></span>
-          <span class="box-body"><i>✦</i><b>?</b></span>
-          <span class="box-label">MYSTERY BOX</span>
+
+        <button
+          class="mystery-box"
+          id="openBox"
+          aria-label="Abrir Mystery Box"
+          disabled>
+
+          <span class="box-aura"></span>
+          <span class="box-lid"></span>
+
+          <span class="box-body">
+            <i>✦</i>
+            <b>?</b>
+          </span>
+
+          <span class="box-label">
+            MYSTERY BOX
+          </span>
+
         </button>
-        <p class="box-instruction" id="boxInstruction">Primero ingresá y validá tu código</p>
+
+        <p class="box-instruction" id="boxInstruction">
+          Primero ingresá y validá tu código
+        </p>
+
       </div>
 
       <div class="result" id="result" aria-live="polite">
+
         <div class="result-spark">✦</div>
+
         <h3>¡TU SORPRESA TE ESPERA!</h3>
+
         <p>Tu premio aparecerá acá.</p>
+
       </div>
+
     </section>
 
+    <!-- COMO FUNCIONA -->
     <section class="how-section" id="como-funciona">
-      <p class="eyebrow centered">SIMPLE, RÁPIDO Y EMOCIONANTE</p>
+
+      <p class="eyebrow centered">
+        SIMPLE, RÁPIDO Y EMOCIONANTE
+      </p>
+
       <h2>¿Cómo funciona?</h2>
+
       <div class="steps">
-        <article><span>01</span><h3>Ingresá tu código</h3><p>Usá el código de acceso que recibiste.</p></article>
-        <article><span>02</span><h3>Validá tu acceso</h3><p>El sistema comprobará que tu código sea válido.</p></article>
-        <article><span>03</span><h3>Abrí tu caja</h3><p>Descubrí el resultado de tu Mystery Box.</p></article>
+
+        <article>
+          <span>01</span>
+          <h3>Ingresá tu código</h3>
+          <p>Usá el código de acceso que recibiste.</p>
+        </article>
+
+        <article>
+          <span>02</span>
+          <h3>Validá tu acceso</h3>
+          <p>El sistema comprobará que tu código sea válido.</p>
+        </article>
+
+        <article>
+          <span>03</span>
+          <h3>Abrí tu caja</h3>
+          <p>Descubrí el resultado de tu Mystery Box.</p>
+        </article>
+
       </div>
+
     </section>
+
   </main>
 
-  <a href="#" class="floating-whatsapp" id="floatingWhatsapp" aria-label="Contactar por WhatsApp">☏</a>
+  <!-- WHATSAPP FLOTANTE -->
+  <a
+    href="#"
+    class="floating-whatsapp"
+    id="floatingWhatsapp"
+    aria-label="Contactar por WhatsApp">
 
+    ☏
+
+  </a>
+
+  <!-- PIE DE PÁGINA -->
   <footer>
+
     <span>♛ RED NOVA</span>
+
     <p>DÓNDE NACEN LOS GANADORES</p>
+
     <small>© RED NOVA</small>
+
   </footer>
 
+  <!-- PANEL -->
   <dialog id="panelDialog">
-    <button class="dialog-close" id="closePanel" aria-label="Cerrar">×</button>
+
+    <button
+      class="dialog-close"
+      id="closePanel"
+      aria-label="Cerrar">
+
+      ×
+
+    </button>
+
     <div class="dialog-crown">♛</div>
+
     <h2>Panel privado</h2>
-    <p>Próximamente vas a poder administrar tus premios e imágenes desde acá.</p>
-    <p class="hint">La administración se conectará al sistema seguro.</p>
+
+    <p>
+      Próximamente vas a poder administrar tus premios e imágenes desde acá.
+    </p>
+
+    <p class="hint">
+      La administración se conectará al sistema seguro.
+    </p>
+
   </dialog>
 
   <script src="script.js?v=3"></script>
+
 </body>
   </html>
   
