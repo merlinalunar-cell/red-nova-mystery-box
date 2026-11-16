@@ -388,34 +388,53 @@
 
   </footer>
 
-  <!-- PANEL -->
+  <!-- PANEL PRIVADO -->
   <dialog id="panelDialog">
 
     <button
       class="dialog-close"
       id="closePanel"
       aria-label="Cerrar">
-
       ×
-
     </button>
 
     <div class="dialog-crown">♛</div>
 
-    <h2>Panel privado</h2>
+    <h2>RED NOVA</h2>
 
-    <p>
-      Próximamente vas a poder administrar tus premios e imágenes desde acá.
-    </p>
+    <p class="hint">ACCESO EXCLUSIVO DE ADMINISTRADOR</p>
 
-    <p class="hint">
-      La administración se conectará al sistema seguro.
-    </p>
+    <form id="adminLoginForm">
+
+      <label for="adminUsername">USUARIO</label>
+
+      <input
+        id="adminUsername"
+        type="text"
+        placeholder="Ingresá tu usuario"
+        autocomplete="username"
+        required>
+
+      <label for="adminPassword">CONTRASEÑA</label>
+
+      <input
+        id="adminPassword"
+        type="password"
+        placeholder="Ingresá tu contraseña"
+        autocomplete="current-password"
+        required>
+
+      <button type="submit" id="adminLoginBtn">
+        INGRESAR AL PANEL
+      </button>
+
+      <p id="adminLoginMessage" class="hint" aria-live="polite"></p>
+
+    </form>
 
   </dialog>
 
   <script src="script.js?v=3"></script>
 
 </body>
-  </html>
-  
+</html>
