@@ -179,3 +179,51 @@ if (closePanel && panelDialog) {
     panelDialog.close();
   });
 }
+// INICIO DE SESIÓN DEL ADMINISTRADOR RED NOVA
+
+const adminLoginForm = document.getElementById("adminLoginForm");
+const adminLoginBtn = document.getElementById("adminLoginBtn");
+const adminLoginMessage = document.getElementById("adminLoginMessage");
+
+if (adminLoginForm) {
+  adminLoginForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const username = document.getElementById("adminUsername").value.trim();
+    const password = document.getElementById("adminPassword").value;
+
+    adminLoginBtn.disabled = true;
+    adminLoginMessage.textContent = "Verificando acceso...";
+
+    try {
+      const response = await fetch("/.netlify/functions/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: "same-origin",
+        body: JSON.stringify({
+          username,
+          password
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        adminLoginMessage.textContent =
+          data.message || "Usuario o contraseña incorrectos.";
+        return;
+      }
+
+      adminLoginMessage.textContent =
+        "Acceso verificado. Estamos preparando el panel.";
+
+    } catch (error) {
+      adminLoginMessage.textContent =
+        "No se pudo conectar. Intentá nuevamente.";
+    } finally {
+      adminLoginBtn.disabled = false;
+    }
+  });
+}
