@@ -1,4 +1,3 @@
-
 const accessCode = document.getElementById("accessCode");
 const validateBtn = document.getElementById("validateBtn");
 const openBox = document.getElementById("openBox");
@@ -237,8 +236,41 @@ if (adminLoginForm) {
         return;
       }
 
+      // TERCERA COMPROBACIÓN: CONEXIÓN CON SUPABASE
       adminLoginMessage.textContent =
-        "¡Administrador verificado correctamente!";
+        "Conectando con la base de datos...";
+
+      const managementResponse = await fetch(
+        "/.netlify/functions/manage",
+        {
+          method: "GET",
+          credentials: "same-origin",
+          cache: "no-store"
+        }
+      );
+
+      const managementData = await managementResponse.json();
+
+      if (!managementResponse.ok || !managementData.success) {
+        adminLoginMessage.textContent =
+          managementData.message ||
+          "No se pudo conectar con la base de datos.";
+        return;
+      }
+
+      const totalPrizes = Array.isArray(managementData.prizes)
+        ? managementData.prizes.length
+        : 0;
+
+      const totalCodes = Array.isArray(managementData.codes)
+        ? managementData.codes.length
+        : 0;
+
+      adminLoginMessage.textContent =
+        "¡Conexión correcta! Premios: " +
+        totalPrizes +
+        " | Códigos: " +
+        totalCodes;
 
       document.getElementById("adminPassword").value = "";
 
@@ -249,4 +281,4 @@ if (adminLoginForm) {
       adminLoginBtn.disabled = false;
     }
   });
-        }
+      }
