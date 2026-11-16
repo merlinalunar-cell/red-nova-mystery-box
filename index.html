@@ -388,26 +388,26 @@
 
   </footer>
 
-  <!-- PANEL PRIVADO -->
-  <dialog id="panelDialog">
+<!-- PANEL PRIVADO -->
+<dialog id="panelDialog">
 
-    <button
-      class="dialog-close"
-      id="closePanel"
-      aria-label="Cerrar">
-      ×
-    </button>
+  <button
+    class="dialog-close"
+    id="closePanel"
+    aria-label="Cerrar">
+    ×
+  </button>
 
-    <div class="dialog-crown">♛</div>
+  <div class="dialog-crown">♛</div>
+  <h2>RED NOVA</h2>
 
-    <h2>RED NOVA</h2>
-
+  <!-- INICIO DE SESIÓN -->
+  <div id="adminLoginSection">
     <p class="hint">ACCESO EXCLUSIVO DE ADMINISTRADOR</p>
 
     <form id="adminLoginForm">
 
       <label for="adminUsername">USUARIO</label>
-
       <input
         id="adminUsername"
         type="text"
@@ -416,7 +416,6 @@
         required>
 
       <label for="adminPassword">CONTRASEÑA</label>
-
       <input
         id="adminPassword"
         type="password"
@@ -429,12 +428,103 @@
       </button>
 
       <p id="adminLoginMessage" class="hint" aria-live="polite"></p>
+    </form>
+  </div>
+
+  <!-- PANEL DE ADMINISTRACIÓN -->
+  <section id="adminDashboard" hidden>
+
+    <h2>PANEL DE ADMINISTRACIÓN</h2>
+    <p class="hint">ADMINISTRADOR RED NOVA</p>
+
+    <hr>
+
+    <!-- AGREGAR PREMIOS -->
+    <h3>🏆 ADMINISTRAR PREMIOS</h3>
+
+    <form id="newPrizeForm">
+
+      <label for="prizeName">NOMBRE DEL PREMIO</label>
+      <input
+        id="prizeName"
+        type="text"
+        placeholder="Ej: Premio de $100.000"
+        required>
+
+      <label for="prizeDescription">DESCRIPCIÓN</label>
+      <textarea
+        id="prizeDescription"
+        placeholder="Descripción del premio"></textarea>
+
+      <label for="prizeImage">IMAGEN DEL PREMIO</label>
+      <input
+        id="prizeImage"
+        type="url"
+        placeholder="Pegá el enlace de la imagen">
+
+      <button type="submit" id="savePrizeBtn">
+        AGREGAR PREMIO
+      </button>
+
+      <p id="prizeMessage" class="hint" aria-live="polite"></p>
 
     </form>
 
-  </dialog>
+    <div id="prizeList"></div>
 
-  <script src="script.js?v=3"></script>
+    <hr>
+
+    <!-- CREAR CÓDIGOS -->
+    <h3>🔐 GENERAR CÓDIGOS</h3>
+
+    <form id="newCodeForm">
+
+      <label for="newCode">CÓDIGO</label>
+      <input
+        id="newCode"
+        type="text"
+        placeholder="Ej: REDNOVA001"
+        required>
+
+      <label for="codePrize">ASIGNAR PREMIO</label>
+      <select id="codePrize" required>
+        <option value="">Seleccioná un premio</option>
+      </select>
+
+      <button type="submit" id="createCodeBtn">
+        CREAR CÓDIGO
+      </button>
+
+      <p id="codeAdminMessage" class="hint" aria-live="polite"></p>
+
+    </form>
+
+    <hr>
+
+    <!-- LISTADO DE CÓDIGOS -->
+    <h3>📋 CÓDIGOS REGISTRADOS</h3>
+    <div id="codeList"></div>
+
+    <hr>
+
+    <!-- HISTORIAL -->
+    <h3>🎁 HISTORIAL DE APERTURAS</h3>
+    <div id="openingList"></div>
+
+    <hr>
+
+    <button type="button" id="refreshAdminBtn">
+      ACTUALIZAR INFORMACIÓN
+    </button>
+
+    <p id="adminRefreshMessage" class="hint" aria-live="polite"></p>
+
+  </section>
+
+</dialog>
+
+<script src="script.js?v=4"></script>
 
 </body>
 </html>
+
