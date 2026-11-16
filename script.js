@@ -10,7 +10,7 @@ let validatedCode = "";
 let openingInProgress = false;
 
 // WHATSAPP AUTOMÁTICO SEGÚN HORARIO DE ARGENTINA
-const WHATSAPP_DIA = "5491151819514"; 
+const WHATSAPP_DIA = "5491151819514";
 const WHATSAPP_NOCHE = "5492224576844";
 
 function obtenerWhatsApp() {
@@ -179,8 +179,8 @@ if (closePanel && panelDialog) {
     panelDialog.close();
   });
 }
-// INICIO DE SESIÓN DEL ADMINISTRADOR RED NOVA
 
+// INICIO DE SESIÓN DEL ADMINISTRADOR RED NOVA
 const adminLoginForm = document.getElementById("adminLoginForm");
 const adminLoginBtn = document.getElementById("adminLoginBtn");
 const adminLoginMessage = document.getElementById("adminLoginMessage");
@@ -196,6 +196,7 @@ if (adminLoginForm) {
     adminLoginMessage.textContent = "Verificando acceso...";
 
     try {
+      // PRIMERA COMPROBACIÓN: USUARIO Y CONTRASEÑA
       const response = await fetch("/.netlify/functions/login", {
         method: "POST",
         headers: {
@@ -216,8 +217,30 @@ if (adminLoginForm) {
         return;
       }
 
+      // SEGUNDA COMPROBACIÓN: SESIÓN DEL ADMINISTRADOR
+      adminLoginMessage.textContent = "Comprobando sesión segura...";
+
+      const sessionResponse = await fetch(
+        "/.netlify/functions/admin",
+        {
+          method: "GET",
+          credentials: "same-origin",
+          cache: "no-store"
+        }
+      );
+
+      const sessionData = await sessionResponse.json();
+
+      if (!sessionResponse.ok || !sessionData.success) {
+        adminLoginMessage.textContent =
+          sessionData.message || "No se pudo verificar la sesión.";
+        return;
+      }
+
       adminLoginMessage.textContent =
-        "Acceso verificado. Estamos preparando el panel.";
+        "¡Administrador verificado correctamente!";
+
+      document.getElementById("adminPassword").value = "";
 
     } catch (error) {
       adminLoginMessage.textContent =
@@ -226,4 +249,4 @@ if (adminLoginForm) {
       adminLoginBtn.disabled = false;
     }
   });
-}
+        }
