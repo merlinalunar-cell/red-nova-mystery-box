@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="es">
 <head>
@@ -140,9 +141,7 @@
 
       <div class="prize-grid">
 
-        <!-- PREMIO 1 -->
         <article class="prize-card">
-
           <div class="prize-image">
             <img
               src="assets/premio-1.jpg"
@@ -152,23 +151,17 @@
           </div>
 
           <h3>THE CRYPT</h3>
-
           <p class="prize-amount">$748.150</p>
 
           <a
             href="#"
             class="whatsapp-cta"
             data-message="¡Hola RED NOVA! Quiero ganar un premio como este: THE CRYPT.">
-
             QUIERO GANAR UN PREMIO COMO ESTE
-
           </a>
-
         </article>
 
-        <!-- PREMIO 2 -->
         <article class="prize-card">
-
           <div class="prize-image">
             <img
               src="assets/premio-2.jpg"
@@ -178,23 +171,17 @@
           </div>
 
           <h3>THUNDER AND LOVE</h3>
-
           <p class="prize-amount">$336.400</p>
 
           <a
             href="#"
             class="whatsapp-cta"
             data-message="¡Hola RED NOVA! Quiero ganar un premio como este: THUNDER AND LOVE.">
-
             QUIERO GANAR UN PREMIO COMO ESTE
-
           </a>
-
         </article>
 
-        <!-- PREMIO 3 -->
         <article class="prize-card">
-
           <div class="prize-image">
             <img
               src="assets/premio-3.jpg"
@@ -204,18 +191,14 @@
           </div>
 
           <h3>MOON GIRLS</h3>
-
           <p class="prize-amount">$1.298.400</p>
 
           <a
             href="#"
             class="whatsapp-cta"
             data-message="¡Hola RED NOVA! Quiero ganar un premio como este: MOON GIRLS.">
-
             QUIERO GANAR UN PREMIO COMO ESTE
-
           </a>
-
         </article>
 
       </div>
@@ -241,9 +224,7 @@
           href="#"
           class="whatsapp-cta main-whatsapp"
           data-message="¡Hola RED NOVA! Quiero ganar en RED NOVA.">
-
           QUIERO GANAR EN RED NOVA
-
         </a>
 
       </div>
@@ -372,9 +353,7 @@
     class="floating-whatsapp"
     id="floatingWhatsapp"
     aria-label="Contactar por WhatsApp">
-
     ☏
-
   </a>
 
   <!-- PIE DE PÁGINA -->
@@ -388,143 +367,146 @@
 
   </footer>
 
-<!-- PANEL PRIVADO -->
-<dialog id="panelDialog">
+  <!-- PANEL PRIVADO -->
+  <dialog id="panelDialog">
 
-  <button
-    class="dialog-close"
-    id="closePanel"
-    aria-label="Cerrar">
-    ×
-  </button>
-
-  <div class="dialog-crown">♛</div>
-  <h2>RED NOVA</h2>
-
-  <!-- INICIO DE SESIÓN -->
-  <div id="adminLoginSection">
-    <p class="hint">ACCESO EXCLUSIVO DE ADMINISTRADOR</p>
-
-    <form id="adminLoginForm">
-
-      <label for="adminUsername">USUARIO</label>
-      <input
-        id="adminUsername"
-        type="text"
-        placeholder="Ingresá tu usuario"
-        autocomplete="username"
-        required>
-
-      <label for="adminPassword">CONTRASEÑA</label>
-      <input
-        id="adminPassword"
-        type="password"
-        placeholder="Ingresá tu contraseña"
-        autocomplete="current-password"
-        required>
-
-      <button type="submit" id="adminLoginBtn">
-        INGRESAR AL PANEL
-      </button>
-
-      <p id="adminLoginMessage" class="hint" aria-live="polite"></p>
-    </form>
-  </div>
-
-  <!-- PANEL DE ADMINISTRACIÓN -->
-  <section id="adminDashboard" hidden>
-
-    <h2>PANEL DE ADMINISTRACIÓN</h2>
-    <p class="hint">ADMINISTRADOR RED NOVA</p>
-
-    <hr>
-
-    <!-- AGREGAR PREMIOS -->
-    <h3>🏆 ADMINISTRAR PREMIOS</h3>
-
-    <form id="newPrizeForm">
-
-      <label for="prizeName">NOMBRE DEL PREMIO</label>
-      <input
-        id="prizeName"
-        type="text"
-        placeholder="Ej: Premio de $100.000"
-        required>
-
-      <label for="prizeDescription">DESCRIPCIÓN</label>
-      <textarea
-        id="prizeDescription"
-        placeholder="Descripción del premio"></textarea>
-
-      <label for="prizeImage">IMAGEN DEL PREMIO</label>
-      <input
-        id="prizeImage"
-        type="url"
-        placeholder="Pegá el enlace de la imagen">
-
-      <button type="submit" id="savePrizeBtn">
-        AGREGAR PREMIO
-      </button>
-
-      <p id="prizeMessage" class="hint" aria-live="polite"></p>
-
-    </form>
-
-    <div id="prizeList"></div>
-
-    <hr>
-
-    <!-- CREAR CÓDIGOS -->
-    <h3>🔐 GENERAR CÓDIGOS</h3>
-
-    <form id="newCodeForm">
-
-      <label for="newCode">CÓDIGO</label>
-      <input
-        id="newCode"
-        type="text"
-        placeholder="Ej: REDNOVA001"
-        required>
-
-      <label for="codePrize">ASIGNAR PREMIO</label>
-      <select id="codePrize" required>
-        <option value="">Seleccioná un premio</option>
-      </select>
-
-      <button type="submit" id="createCodeBtn">
-        CREAR CÓDIGO
-      </button>
-
-      <p id="codeAdminMessage" class="hint" aria-live="polite"></p>
-
-    </form>
-
-    <hr>
-
-    <!-- LISTADO DE CÓDIGOS -->
-    <h3>📋 CÓDIGOS REGISTRADOS</h3>
-    <div id="codeList"></div>
-
-    <hr>
-
-    <!-- HISTORIAL -->
-    <h3>🎁 HISTORIAL DE APERTURAS</h3>
-    <div id="openingList"></div>
-
-    <hr>
-
-    <button type="button" id="refreshAdminBtn">
-      ACTUALIZAR INFORMACIÓN
+    <button
+      class="dialog-close"
+      id="closePanel"
+      aria-label="Cerrar">
+      ×
     </button>
 
-    <p id="adminRefreshMessage" class="hint" aria-live="polite"></p>
+    <div class="dialog-crown">♛</div>
+    <h2>RED NOVA</h2>
 
-  </section>
+    <!-- INICIO DE SESIÓN -->
+    <div id="adminLoginSection">
+      <p class="hint">ACCESO EXCLUSIVO DE ADMINISTRADOR</p>
 
-</dialog>
+      <form id="adminLoginForm">
 
-<script src="script.js?v=4"></script>
+        <label for="adminUsername">USUARIO</label>
+        <input
+          id="adminUsername"
+          type="text"
+          placeholder="Ingresá tu usuario"
+          autocomplete="username"
+          required>
+
+        <label for="adminPassword">CONTRASEÑA</label>
+        <input
+          id="adminPassword"
+          type="password"
+          placeholder="Ingresá tu contraseña"
+          autocomplete="current-password"
+          required>
+
+        <button type="submit" id="adminLoginBtn">
+          INGRESAR AL PANEL
+        </button>
+
+        <p id="adminLoginMessage" class="hint" aria-live="polite"></p>
+      </form>
+    </div>
+
+    <!-- PANEL DE ADMINISTRACIÓN -->
+    <section id="adminDashboard" hidden>
+
+      <h2>PANEL DE ADMINISTRACIÓN</h2>
+      <p class="hint">ADMINISTRADOR RED NOVA</p>
+
+      <hr>
+
+      <!-- ADMINISTRAR PREMIOS -->
+      <h3>🏆 ADMINISTRAR PREMIOS</h3>
+
+      <form id="newPrizeForm">
+
+        <label for="prizeName">NOMBRE DEL PREMIO</label>
+        <input
+          id="prizeName"
+          type="text"
+          placeholder="Ej: Premio de $100.000"
+          required>
+
+        <label for="prizeDescription">DESCRIPCIÓN</label>
+        <textarea
+          id="prizeDescription"
+          placeholder="Descripción del premio"></textarea>
+
+        <label for="prizeImage">IMAGEN DEL PREMIO</label>
+        <input
+          id="prizeImage"
+          type="url"
+          placeholder="Pegá el enlace de la imagen">
+
+        <label for="prizeStock">CANTIDAD DISPONIBLE</label>
+        <input
+          id="prizeStock"
+          type="number"
+          min="0"
+          step="1"
+          placeholder="Ej: 10"
+          required>
+
+        <button type="submit" id="savePrizeBtn">
+          AGREGAR PREMIO
+        </button>
+
+        <p id="prizeMessage" class="hint" aria-live="polite"></p>
+
+      </form>
+
+      <div id="prizeList"></div>
+
+      <hr>
+
+      <!-- GENERAR CÓDIGOS -->
+      <h3>🔐 GENERAR CÓDIGOS</h3>
+
+      <form id="newCodeForm">
+
+        <label for="newCode">CÓDIGO</label>
+        <input
+          id="newCode"
+          type="text"
+          placeholder="Ej: REDNOVA001"
+          required>
+
+        <button type="submit" id="createCodeBtn">
+          CREAR CÓDIGO
+        </button>
+
+        <p id="codeAdminMessage" class="hint" aria-live="polite"></p>
+
+      </form>
+
+      <hr>
+
+      <!-- LISTADO DE CÓDIGOS -->
+      <h3>📋 CÓDIGOS REGISTRADOS</h3>
+      <div id="codeList"></div>
+
+      <hr>
+
+      <!-- HISTORIAL -->
+      <h3>🎁 HISTORIAL DE APERTURAS</h3>
+      <div id="openingList"></div>
+
+      <hr>
+
+      <button type="button" id="refreshAdminBtn">
+        ACTUALIZAR INFORMACIÓN
+      </button>
+
+      <p id="adminRefreshMessage" class="hint" aria-live="polite"></p>
+
+    </section>
+
+  </dialog>
+
+  <script src="script.js?v=5"></script>
 
 </body>
 </html>
-
