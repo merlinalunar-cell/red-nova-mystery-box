@@ -268,3 +268,139 @@ dialog{width:min(90%,420px);border:1px solid #4ceaff;border-radius:18px;backgrou
 .prize-card .whatsapp-cta {
   min-height: 58px;
 }
+/* =========================================
+   RED NOVA - AJUSTES MYSTERY BOX Y PANEL
+   ========================================= */
+
+/* EL PREMIO OCUPA EL LUGAR DE LA CAJA */
+
+.box-choice {
+  width: 100%;
+  max-width: 540px;
+  margin: 35px auto 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.box-choice.has-result .mystery-box,
+.box-choice.has-result .box-instruction {
+  display: none;
+}
+
+.box-choice.has-result {
+  min-height: 185px;
+}
+
+.box-choice.has-result .result {
+  width: 100%;
+  max-width: 540px;
+  margin: 0 auto;
+}
+
+.box-choice.has-result .result.show {
+  display: block;
+}
+
+/* COLUMNAS DE CODIGOS DEL PANEL PRIVADO */
+
+.admin-code-columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  width: 100%;
+  margin-top: 20px;
+  align-items: start;
+}
+
+.admin-code-column {
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid #39dfff77;
+  border-radius: 15px;
+  background: linear-gradient(145deg, #09285d, #04132f);
+  box-shadow: 0 0 18px #008cff22;
+}
+
+.admin-code-column h3 {
+  margin: 0 0 15px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #39dfff55;
+  color: #8defff;
+  font: 800 13px Orbitron, sans-serif;
+  text-align: center;
+  line-height: 1.5;
+}
+
+.admin-code-column.available-codes h3 {
+  color: #65f5c4;
+}
+
+.admin-code-column.used-codes h3 {
+  color: #ffb7b7;
+}
+
+.admin-code-item {
+  min-width: 0;
+  margin-bottom: 10px;
+  padding: 12px;
+  border: 1px solid #39dfff44;
+  border-radius: 10px;
+  background: #020d29cc;
+  overflow-wrap: anywhere;
+}
+
+.admin-code-item:last-child {
+  margin-bottom: 0;
+}
+
+.admin-code-item strong {
+  display: block;
+  margin-bottom: 6px;
+  color: #ffffff;
+  font: 800 13px Orbitron, sans-serif;
+  letter-spacing: .5px;
+}
+
+.admin-code-item span,
+.admin-code-item small {
+  display: block;
+  color: #a9c9e7;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.available-codes .admin-code-item {
+  border-left: 3px solid #65f5c4;
+}
+
+.used-codes .admin-code-item {
+  border-left: 3px solid #ff8585;
+}
+
+/* ADAPTACION PARA CELULARES */
+
+@media (max-width: 760px) {
+  .admin-code-columns {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .admin-code-column {
+    padding: 13px;
+  }
+
+  .box-choice {
+    max-width: 100%;
+    padding: 0 8px;
+  }
+
+  .box-choice.has-result {
+    min-height: 185px;
+  }
+
+  .box-choice.has-result .result {
+    padding: 20px 16px;
+  }
+}
