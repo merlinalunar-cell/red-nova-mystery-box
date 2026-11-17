@@ -458,3 +458,44 @@ body::before {
     opacity: 0.09;
   }
 }
+/* ===== RED NOVA - PORTADA HORIZONTAL ===== */
+
+.hero-logo {
+  display: block;
+  width: 100%;
+  max-width: 600px;
+  max-height: none;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  margin: 0 auto 25px;
+  border: 1px solid #35eaff88;
+  border-radius: 16px;
+  box-shadow:
+    0 0 20px #00cfff88,
+    0 0 45px #075dff66;
+}
+
+/* FONDO MAS SUTIL */
+
+body::before {
+  opacity: 0.035;
+  background-size: min(70vw, 650px) auto;
+}
+
+/* PORTADA EN CELULARES */
+
+@media (max-width: 760px) {
+  .hero-logo {
+    width: 100%;
+    max-width: 540px;
+    max-height: none;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    margin: 0 auto 22px;
+  }
+
+  body::before {
+    opacity: 0.025;
+    background-size: 90vw auto;
+  }
+}
