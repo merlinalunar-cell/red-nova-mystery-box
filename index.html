@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="es">
 <head>
@@ -36,7 +37,7 @@
       <a href="#como-funciona">Cómo funciona</a>
       <button type="button" class="nav-panel" id="panelBtn"
         onclick="document.getElementById('panelDialog').showModal()">
-  PANEL
+        PANEL
       </button>
     </nav>
   </header>
@@ -418,16 +419,30 @@
 
       <hr>
 
-      <!-- GENERAR CÓDIGOS -->
-      <h3>🔐 GENERAR CÓDIGOS</h3>
+      <!-- GENERADOR AUTOMÁTICO DE CÓDIGOS -->
+      <h3>🔐 GENERADOR AUTOMÁTICO DE CÓDIGOS</h3>
+
+      <p class="hint">
+        Elegí cuántos códigos únicos querés crear. El sistema los generará
+        automáticamente y quedarán disponibles para utilizar.
+      </p>
 
       <form id="newCodeForm">
-        <label for="newCode">CÓDIGO</label>
-        <input id="newCode" type="text"
-               placeholder="Ej: REDNOVA001" required>
+
+        <label for="codeQuantity">CANTIDAD DE CÓDIGOS A GENERAR</label>
+
+        <input
+          id="codeQuantity"
+          type="number"
+          min="1"
+          max="500"
+          step="1"
+          value="10"
+          required
+        >
 
         <button type="submit" id="createCodeBtn">
-          CREAR CÓDIGO
+          ⚡ GENERAR CÓDIGOS AUTOMÁTICAMENTE
         </button>
 
         <p id="codeAdminMessage" class="hint"
@@ -462,5 +477,5 @@
   <script src="script.js?v=7"></script>
 
 </body>
-    </html>
-    
+            </html>
+            
