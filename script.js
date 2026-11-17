@@ -255,9 +255,32 @@ openBox.addEventListener("click", async () => {
       textoPremio += " — " + prize.description;
     }
 
-    description.textContent = textoPremio;
+description.textContent = textoPremio;
 
-    result.classList.add("show");
+// BOTÓN PARA RECLAMAR EL PREMIO
+const codigoReclamo = validatedCode;
+const botonReclamar = document.createElement("a");
+
+botonReclamar.className = "whatsapp-cta";
+botonReclamar.textContent = "RECLAMAR MI PREMIO POR WHATSAPP";
+
+const mensajeReclamo =
+  "Hola RED NOVA, quiero reclamar mi premio." +
+  "\nPremio: " + textoPremio +
+  "\nCódigo: " + codigoReclamo;
+
+botonReclamar.href =
+  "https://wa.me/" + obtenerWhatsApp() +
+  "?text=" + encodeURIComponent(mensajeReclamo);
+
+botonReclamar.target = "_blank";
+botonReclamar.rel = "noopener noreferrer";
+
+result.appendChild(botonReclamar);
+
+result.classList.add("show");
+    
+    
     boxInstruction.textContent = "¡Descubriste tu premio!";
     codeMessage.textContent = "Este código ya fue utilizado.";
 
