@@ -789,22 +789,51 @@ if (newFeaturedPrizeForm) {
   });
 }
 
-// CREAR CÓDIGO
+
+// GENERAR VARIOS CÓDIGOS AUTOMÁTICOS
 if (newCodeForm) {
   newCodeForm.addEventListener("submit", async (event) => {
     event.preventDefault();
 
     const button = document.getElementById("createCodeBtn");
-    const code = document.getElementById("newCode").value.trim().toUpperCase();
+    const quantity = Number(
+      document.getElementById("codeQuantity").value
+    );
+
+    if (
+      !Number.isSafeInteger(quantity) ||
+      quantity < 1 ||
+      quantity > 500
+    ) {
+      codeAdminMessage.textContent =
+        "Elegí una cantidad entre 1 y 500.";
+      return;
+    }
 
     button.disabled = true;
-    codeAdminMessage.textContent = "Creando código...";
+    codeAdminMessage.textContent = "Generando códigos automáticamente...";
 
     try {
-      await manageRequest("POST", {
-        action: "create_code",
-        code
+      const data = await manageRequest("POST", {
+        action: "generate_codes",
+        quantity
       });
+
+      codeAdminMessage.textContent =
+        "¡ÉXITO! Se generaron " +
+        data.quantity +
+        " códigos correctamente.";
+
+      await cargarPanel();
+
+    } catch (error) {
+      codeAdminMessage.textContent = error.message;
+    } finally {
+      button.disabled = false;
+    }
+  });
+}
+
 
       newCodeForm.reset();
       codeAdminMessage.textContent = "Código creado correctamente.";
