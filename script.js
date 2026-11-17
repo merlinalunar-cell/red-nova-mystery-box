@@ -193,7 +193,6 @@ const newCodeForm = document.getElementById("newCodeForm");
 const prizeList = document.getElementById("prizeList");
 const codeList = document.getElementById("codeList");
 const openingList = document.getElementById("openingList");
-const codePrize = document.getElementById("codePrize");
 
 const prizeMessage = document.getElementById("prizeMessage");
 const codeAdminMessage = document.getElementById("codeAdminMessage");
@@ -260,25 +259,21 @@ async function cargarPanel() {
     dibujarCodigos();
     dibujarAperturas();
 
-    adminRefreshMessage.textContent = "Información actualizada correctamente.";
+    adminRefreshMessage.textContent =
+      "Información actualizada correctamente.";
 
   } catch (error) {
     adminRefreshMessage.textContent = error.message;
   }
 }
 
-// MOSTRAR PREMIOS
+// MOSTRAR PREMIOS Y STOCK
 function dibujarPremios() {
   prizeList.replaceChildren();
-  codePrize.replaceChildren();
-
-  const opcionInicial = document.createElement("option");
-  opcionInicial.value = "";
-  opcionInicial.textContent = "Seleccioná un premio";
-  codePrize.appendChild(opcionInicial);
 
   if (!adminData.prizes.length) {
     crearTexto(prizeList, "Todavía no hay premios cargados.");
+    return;
   }
 
   adminData.prizes.forEach((premio) => {
@@ -298,6 +293,7 @@ function dibujarPremios() {
       tarjeta.appendChild(imagen);
     }
 
+    crearTexto(tarjeta, "Stock disponible: " + Number(premio.stock || 0));
     crearTexto(
       tarjeta,
       premio.active ? "Estado: Activo" : "Estado: Inactivo"
@@ -312,13 +308,6 @@ function dibujarPremios() {
     );
 
     prizeList.appendChild(tarjeta);
-
-    if (premio.active) {
-      const opcion = document.createElement("option");
-      opcion.value = premio.id;
-      opcion.textContent = premio.name;
-      codePrize.appendChild(opcion);
-    }
   });
 }
 
@@ -340,7 +329,16 @@ function dibujarCodigos() {
     );
 
     crearTexto(tarjeta, "Código: " + codigo.code, "strong");
-    crearTexto(tarjeta, "Premio: " + (premio?.name || "No disponible"));
+
+    crearTexto(
+      tarjeta,
+      "Premio: " + (premio?.name || (
+        codigo.status === "used"
+          ? "No disponible"
+          : "Se sortea al abrir la caja"
+      ))
+    );
+
     crearTexto(tarjeta, "Estado: " + (codigo.status || "Sin estado"));
 
     codeList.appendChild(tarjeta);
@@ -360,8 +358,23 @@ function dibujarAperturas() {
     const tarjeta = document.createElement("div");
     tarjeta.className = "admin-opening-item";
 
-    crearTexto(tarjeta, "Código ID: " + (apertura.code_id || "No disponible"));
-    crearTexto(tarjeta, "Premio ID: " + (apertura.prize_id || "No disponible"));
+    const codigo = adminData.codes.find(
+      item => String(item.id) === String(apertura.code_id)
+    );
+
+    const premio = adminData.prizes.find(
+      item => String(item.id) === String(apertura.prize_id)
+    );
+
+    crearTexto(
+      tarjeta,
+      "Código: " + (codigo?.code || apertura.code_id || "No disponible")
+    );
+
+    crearTexto(
+      tarjeta,
+      "Premio: " + (premio?.name || "Premio registrado")
+    );
 
     if (apertura.opened_at) {
       const fecha = new Date(apertura.opened_at);
@@ -431,7 +444,10 @@ if (adminLoginForm) {
 
       await cargarPanel();
 
-      if (adminRefreshMessage.textContent !== "Información actualizada correctamente.") {
+      if (
+        adminRefreshMessage.textContent !==
+        "Información actualizada correctamente."
+      ) {
         adminLoginMessage.textContent =
           "Administrador verificado, pero no se pudo cargar la información: " +
           adminRefreshMessage.textContent;
@@ -451,12 +467,20 @@ if (adminLoginForm) {
   });
 }
 
-// AGREGAR PREMIO
+// AGREGAR PREMIO CON STOCK
 if (newPrizeForm) {
   newPrizeForm.addEventListener("submit", async (event) => {
     event.preventDefault();
 
     const saveButton = document.getElementById("savePrizeBtn");
+    const stock = Number(document.getElementById("prizeStock").value);
+
+    if (!Number.isInteger(stock) || stock < 0) {
+      prizeMessage.textContent =
+        "Ingresá una cantidad entera igual o mayor a cero.";
+      return;
+    }
+
     saveButton.disabled = true;
     prizeMessage.textContent = "Guardando premio...";
 
@@ -465,7 +489,8 @@ if (newPrizeForm) {
         action: "create_prize",
         name: document.getElementById("prizeName").value,
         description: document.getElementById("prizeDescription").value,
-        image_url: document.getElementById("prizeImage").value
+        image_url: document.getElementById("prizeImage").value,
+        stock
       });
 
       newPrizeForm.reset();
@@ -480,7 +505,7 @@ if (newPrizeForm) {
   });
 }
 
-// CREAR CÓDIGO
+// CREAR CÓDIGO SIN ASIGNAR PREMIO
 if (newCodeForm) {
   newCodeForm.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -492,8 +517,7 @@ if (newCodeForm) {
     try {
       await manageRequest("POST", {
         action: "create_code",
-        code: document.getElementById("newCode").value,
-        prize_id: codePrize.value
+        code: document.getElementById("newCode").value
       });
 
       newCodeForm.reset();
@@ -516,6 +540,7 @@ if (prizeList) {
 
     const id = boton.dataset.itemId;
     const accion = boton.dataset.adminAction;
+
     const premio = adminData.prizes.find(
       item => String(item.id) === String(id)
     );
@@ -541,19 +566,34 @@ if (prizeList) {
         );
         if (image_url === null) return;
 
+        const stockTexto = prompt(
+          "Cantidad disponible:",
+          String(Number(premio.stock || 0))
+        );
+        if (stockTexto === null) return;
+
+        const stock = Number(stockTexto);
+
+        if (!Number.isInteger(stock) || stock < 0) {
+          prizeMessage.textContent =
+            "El stock debe ser un número entero igual o mayor a cero.";
+          return;
+        }
+
         await manageRequest("POST", {
           action: "update_prize",
           id,
           name,
           description,
-          image_url
+          image_url,
+          stock
         });
 
         prizeMessage.textContent = "¡Premio actualizado!";
 
       } else if (accion === "delete-prize") {
         const confirmar = confirm(
-          "¿Seguro que querés eliminar este premio? Esta acción puede estar limitada si tiene códigos asociados."
+          "¿Seguro que querés eliminar este premio? Esta acción puede estar limitada si tiene aperturas asociadas."
         );
 
         if (!confirmar) return;
@@ -581,5 +621,5 @@ const refreshAdminBtn = document.getElementById("refreshAdminBtn");
 
 if (refreshAdminBtn) {
   refreshAdminBtn.addEventListener("click", cargarPanel);
-                           }
-          
+    }
+                                   
