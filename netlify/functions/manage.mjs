@@ -134,9 +134,12 @@ export default async (request) => {
 
     const body = await request.json();
 
-    // CREAR PREMIO
+    // CREAR PREMIO CON CANTIDAD
     if (body.action === "create_prize") {
-      if (!body.name || !String(body.name).trim()) {
+      const name = String(body.name || "").trim();
+      const stock = Number(body.stock);
+
+      if (!name) {
         return new Response(
           JSON.stringify({
             success: false,
@@ -146,12 +149,27 @@ export default async (request) => {
         );
       }
 
+      if (
+        body.stock === undefined ||
+        !Number.isSafeInteger(stock) ||
+        stock < 0
+      ) {
+        return new Response(
+          JSON.stringify({
+            success: false,
+            message: "Ingresá una cantidad válida."
+          }),
+          { status: 400, headers }
+        );
+      }
+
       const prize = await database("prizes", {
         method: "POST",
         body: JSON.stringify({
-          name: String(body.name).trim(),
+          name,
           description: String(body.description || "").trim(),
           image_url: String(body.image_url || "").trim(),
+          stock,
           active: true
         })
       });
@@ -186,6 +204,22 @@ export default async (request) => {
 
       if (body.image_url !== undefined) {
         changes.image_url = String(body.image_url).trim();
+      }
+
+      if (body.stock !== undefined) {
+        const stock = Number(body.stock);
+
+        if (!Number.isSafeInteger(stock) || stock < 0) {
+          return new Response(
+            JSON.stringify({
+              success: false,
+              message: "La cantidad debe ser un número entero igual o mayor a cero."
+            }),
+            { status: 400, headers }
+          );
+        }
+
+        changes.stock = stock;
       }
 
       if (body.active !== undefined) {
@@ -229,15 +263,15 @@ export default async (request) => {
       );
     }
 
-    // CREAR CÓDIGO
+    // CREAR CÓDIGO SIN PREMIO ASIGNADO
     if (body.action === "create_code") {
       const code = String(body.code || "").trim().toUpperCase();
 
-      if (!code || !body.prize_id) {
+      if (!code) {
         return new Response(
           JSON.stringify({
             success: false,
-            message: "Ingresá un código y seleccioná un premio."
+            message: "Ingresá un código."
           }),
           { status: 400, headers }
         );
@@ -247,7 +281,6 @@ export default async (request) => {
         method: "POST",
         body: JSON.stringify({
           code,
-          prize_id: body.prize_id,
           status: "available"
         })
       });
@@ -279,4 +312,3 @@ export default async (request) => {
     );
   }
 };
-          
