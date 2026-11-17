@@ -1,4 +1,3 @@
-
 // ==========================================
 // RED NOVA - SISTEMA PRINCIPAL
 // ==========================================
@@ -9,6 +8,7 @@ const openBox = document.getElementById("openBox");
 const codeMessage = document.getElementById("codeMessage");
 const boxInstruction = document.getElementById("boxInstruction");
 const result = document.getElementById("result");
+const boxChoice = document.querySelector(".box-choice");
 
 let validatedCode = "";
 let openingInProgress = false;
@@ -128,7 +128,6 @@ async function cargarPremiosPublicados() {
     const data = await response.json();
 
     if (!data.success || !Array.isArray(data.prizes)) return;
-
     if (data.prizes.length === 0) return;
 
     grilla.replaceChildren();
@@ -163,6 +162,14 @@ validateBtn.addEventListener("click", async () => {
   openBox.disabled = true;
   codeMessage.textContent = "Verificando tu código...";
   result.classList.remove("show");
+
+  if (boxChoice) {
+    boxChoice.classList.remove("has-result");
+  }
+
+  const botonAnterior = result.querySelector(".whatsapp-cta");
+  if (botonAnterior) botonAnterior.remove();
+
   validatedCode = "";
 
   try {
@@ -186,7 +193,10 @@ validateBtn.addEventListener("click", async () => {
     boxInstruction.textContent = "¡Tu sorpresa está lista!";
     openBox.disabled = false;
     openBox.classList.add("enabled");
-openBox.click();
+
+    // APERTURA AUTOMÁTICA AL VALIDAR
+    openBox.click();
+
   } catch (error) {
     codeMessage.textContent =
       "No pudimos conectar con el sistema. Intentá nuevamente.";
@@ -201,6 +211,14 @@ accessCode.addEventListener("input", () => {
   openBox.disabled = true;
   openBox.classList.remove("enabled");
   result.classList.remove("show");
+
+  if (boxChoice) {
+    boxChoice.classList.remove("has-result");
+  }
+
+  const botonAnterior = result.querySelector(".whatsapp-cta");
+  if (botonAnterior) botonAnterior.remove();
+
   codeMessage.textContent = "Validá nuevamente tu código.";
   boxInstruction.textContent = "Primero ingresá y validá tu código.";
 });
@@ -275,9 +293,17 @@ openBox.addEventListener("click", async () => {
     botonReclamar.target = "_blank";
     botonReclamar.rel = "noopener noreferrer";
 
+    const botonAnterior = result.querySelector(".whatsapp-cta");
+    if (botonAnterior) botonAnterior.remove();
+
     result.appendChild(botonReclamar);
 
     result.classList.add("show");
+
+    // OCULTAR LA CAJA Y MOSTRAR EL PREMIO EN SU LUGAR
+    if (boxChoice) {
+      boxChoice.classList.add("has-result");
+    }
 
     boxInstruction.textContent = "¡Descubriste tu premio!";
     codeMessage.textContent = "Este código ya fue utilizado.";
@@ -290,11 +316,12 @@ openBox.addEventListener("click", async () => {
       "Hubo un problema al abrir la caja. Contactá con atención.";
     boxInstruction.textContent = "No se pudo completar la apertura.";
     openBox.disabled = false;
+
   } finally {
     openingInProgress = false;
   }
 });
-
+    
 // ==========================================
 // PANEL PRIVADO
 // ==========================================
@@ -412,9 +439,11 @@ async function cargarPanel() {
     adminData = await manageRequest("GET");
 
     if (!Array.isArray(adminData.prizes)) adminData.prizes = [];
+
     if (!Array.isArray(adminData.featured_prizes)) {
       adminData.featured_prizes = [];
     }
+
     if (!Array.isArray(adminData.codes)) adminData.codes = [];
     if (!Array.isArray(adminData.openings)) adminData.openings = [];
 
@@ -462,12 +491,15 @@ function dibujarPremios() {
     }
 
     crearTexto(tarjeta, "Stock disponible: " + Number(premio.stock || 0));
+
     crearTexto(
       tarjeta,
       premio.active ? "Estado: Activo" : "Estado: Inactivo"
     );
 
-    tarjeta.appendChild(crearBoton("EDITAR", "edit-prize", premio.id));
+    tarjeta.appendChild(
+      crearBoton("EDITAR", "edit-prize", premio.id)
+    );
 
     tarjeta.appendChild(
       crearBoton(
@@ -477,7 +509,9 @@ function dibujarPremios() {
       )
     );
 
-    tarjeta.appendChild(crearBoton("ELIMINAR", "delete-prize", premio.id));
+    tarjeta.appendChild(
+      crearBoton("ELIMINAR", "delete-prize", premio.id)
+    );
 
     prizeList.appendChild(tarjeta);
   });
@@ -544,18 +578,42 @@ function dibujarPremiosPublicados() {
 }
 
 // ==========================================
-// MOSTRAR CÓDIGOS
+// MOSTRAR CÓDIGOS EN DOS COLUMNAS
 // ==========================================
 
 function dibujarCodigos() {
   codeList.replaceChildren();
 
-  if (!adminData.codes.length) {
-    crearTexto(codeList, "Todavía no hay códigos registrados.");
-    return;
-  }
+  const disponibles = adminData.codes.filter(
+    codigo => String(codigo.status || "").toLowerCase() !== "used"
+  );
 
-  adminData.codes.forEach((codigo) => {
+  const utilizados = adminData.codes.filter(
+    codigo => String(codigo.status || "").toLowerCase() === "used"
+  );
+
+  const columnas = document.createElement("div");
+  columnas.className = "admin-code-columns";
+
+  const columnaDisponibles = document.createElement("section");
+  columnaDisponibles.className = "admin-code-column available-codes";
+
+  const columnaUtilizados = document.createElement("section");
+  columnaUtilizados.className = "admin-code-column used-codes";
+
+  crearTexto(
+    columnaDisponibles,
+    "🟢 CÓDIGOS DISPONIBLES (" + disponibles.length + ")",
+    "h4"
+  );
+
+  crearTexto(
+    columnaUtilizados,
+    "🔴 CÓDIGOS UTILIZADOS (" + utilizados.length + ")",
+    "h4"
+  );
+
+  function crearTarjetaCodigo(codigo) {
     const tarjeta = document.createElement("div");
     tarjeta.className = "admin-code-item";
 
@@ -568,16 +626,38 @@ function dibujarCodigos() {
     crearTexto(
       tarjeta,
       "Premio: " + (premio?.name || (
-        codigo.status === "used"
+        String(codigo.status || "").toLowerCase() === "used"
           ? "No disponible"
           : "Se sortea al abrir la caja"
       ))
     );
 
-    crearTexto(tarjeta, "Estado: " + (codigo.status || "Sin estado"));
+    crearTexto(
+      tarjeta,
+      "Estado: " + (codigo.status || "Sin estado")
+    );
 
-    codeList.appendChild(tarjeta);
-  });
+    return tarjeta;
+  }
+
+  if (disponibles.length) {
+    disponibles.forEach(codigo => {
+      columnaDisponibles.appendChild(crearTarjetaCodigo(codigo));
+    });
+  } else {
+    crearTexto(columnaDisponibles, "No hay códigos disponibles.");
+  }
+
+  if (utilizados.length) {
+    utilizados.forEach(codigo => {
+      columnaUtilizados.appendChild(crearTarjetaCodigo(codigo));
+    });
+  } else {
+    crearTexto(columnaUtilizados, "Todavía no hay códigos utilizados.");
+  }
+
+  columnas.append(columnaDisponibles, columnaUtilizados);
+  codeList.appendChild(columnas);
 }
 
 // ==========================================
@@ -629,8 +709,7 @@ function dibujarAperturas() {
 
     openingList.appendChild(tarjeta);
   });
-}
-
+  }
 // ==========================================
 // INICIO DE SESIÓN DEL ADMINISTRADOR
 // ==========================================
@@ -701,6 +780,7 @@ if (adminLoginForm) {
     } catch (error) {
       adminLoginMessage.textContent =
         error.message || "No se pudo conectar. Intentá nuevamente.";
+
     } finally {
       adminLoginBtn.disabled = false;
     }
@@ -715,9 +795,7 @@ if (newPrizeForm) {
   newPrizeForm.addEventListener("submit", async (event) => {
     event.preventDefault();
 
-    const saveButton = document.getElementById("savePrizeBtn")
-    
-;
+    const saveButton = document.getElementById("savePrizeBtn");
     const stock = Number(document.getElementById("prizeStock").value);
     const amountText = document.getElementById("prizeAmount").value.trim();
 
@@ -750,15 +828,20 @@ if (newPrizeForm) {
       newPrizeForm.reset();
       prizeMessage.textContent = "Premio agregado correctamente.";
       await cargarPanel();
+
     } catch (error) {
       prizeMessage.textContent = error.message;
+
     } finally {
       saveButton.disabled = false;
     }
   });
 }
 
+// ==========================================
 // AGREGAR PREMIO PUBLICADO
+// ==========================================
+
 if (newFeaturedPrizeForm) {
   newFeaturedPrizeForm.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -781,15 +864,20 @@ if (newFeaturedPrizeForm) {
       featuredPrizeMessage.textContent = "Premio publicado correctamente.";
       await cargarPanel();
       cargarPremiosPublicados();
+
     } catch (error) {
       featuredPrizeMessage.textContent = error.message;
+
     } finally {
       button.disabled = false;
     }
   });
 }
 
+// ==========================================
 // GENERAR VARIOS CÓDIGOS AUTOMÁTICOS
+// ==========================================
+
 if (newCodeForm) {
   newCodeForm.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -827,13 +915,17 @@ if (newCodeForm) {
 
     } catch (error) {
       codeAdminMessage.textContent = error.message;
+
     } finally {
       button.disabled = false;
     }
   });
 }
 
+// ==========================================
 // ACCIONES DE LAS TARJETAS DEL PANEL
+// ==========================================
+
 async function ejecutarAccionAdmin(event) {
   const boton = event.target.closest("button[data-admin-action]");
   if (!boton) return;
@@ -963,6 +1055,7 @@ async function ejecutarAccionAdmin(event) {
 
   } catch (error) {
     alert(error.message);
+
   } finally {
     boton.disabled = false;
   }
@@ -974,10 +1067,12 @@ async function ejecutarAccionAdmin(event) {
   }
 });
 
+// ==========================================
 // ACTUALIZAR PANEL
+// ==========================================
+
 const refreshAdminBtn = document.getElementById("refreshAdminBtn");
 
 if (refreshAdminBtn) {
   refreshAdminBtn.addEventListener("click", cargarPanel);
-                                        }
-  
+}
