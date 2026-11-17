@@ -1,3 +1,6 @@
+// ==========================================
+// RED NOVA - SISTEMA PRINCIPAL
+// ==========================================
 
 const accessCode = document.getElementById("accessCode");
 const validateBtn = document.getElementById("validateBtn");
@@ -9,7 +12,7 @@ const result = document.getElementById("result");
 let validatedCode = "";
 let openingInProgress = false;
 
-// WHATSAPP AUTOMÁTICO SEGÚN HORARIO DE ARGENTINA
+// WHATSAPP SEGÚN HORARIO DE ARGENTINA
 const WHATSAPP_DIA = "5491151819514";
 const WHATSAPP_NOCHE = "5492224576844";
 
@@ -54,7 +57,100 @@ function conectarWhatsApp() {
 
 conectarWhatsApp();
 
+// ==========================================
+// PREMIOS PUBLICADOS EN LA PÁGINA
+// ==========================================
+
+function crearTarjetaPublicada(premio, indice) {
+  const tarjeta = document.createElement("article");
+  tarjeta.className = "prize-card";
+
+  const contenedorImagen = document.createElement("div");
+  contenedorImagen.className = "prize-image";
+
+  if (premio.image_url) {
+    const imagen = document.createElement("img");
+    imagen.src = premio.image_url;
+    imagen.alt = "Premio " + premio.name;
+    imagen.loading = "lazy";
+    contenedorImagen.appendChild(imagen);
+  }
+
+  const numero = document.createElement("span");
+  numero.className = "prize-number";
+  numero.textContent = "PREMIO " + String(indice + 1).padStart(2, "0");
+  contenedorImagen.appendChild(numero);
+
+  const nombre = document.createElement("h3");
+  nombre.textContent = premio.name || "Premio";
+
+  const monto = document.createElement("p");
+  monto.className = "prize-amount";
+
+  if (premio.amount !== null && premio.amount !== undefined && premio.amount !== "") {
+    monto.textContent = "$" + Number(premio.amount).toLocaleString("es-AR");
+  } else {
+    monto.textContent = "";
+  }
+
+  const boton = document.createElement("a");
+  boton.href = "#";
+  boton.className = "whatsapp-cta";
+  boton.dataset.message =
+    "¡Hola RED NOVA! Quiero ganar un premio como este: " +
+    (premio.name || "premio") + ".";
+
+  boton.textContent = "QUIERO GANAR UN PREMIO COMO ESTE";
+
+  tarjeta.append(
+    contenedorImagen,
+    nombre,
+    monto,
+    boton
+  );
+
+  return tarjeta;
+}
+
+async function cargarPremiosPublicados() {
+  const grilla = document.getElementById("featuredPrizeGrid");
+  if (!grilla) return;
+
+  try {
+    const response = await fetch(
+      "/.netlify/functions/featured-prizes",
+      { cache: "no-store" }
+    );
+
+    if (!response.ok) return;
+
+    const data = await response.json();
+
+    if (!data.success || !Array.isArray(data.prizes)) return;
+
+    // Si no hay premios cargados, conserva las tarjetas originales.
+    if (data.prizes.length === 0) return;
+
+    grilla.replaceChildren();
+
+    data.prizes.forEach((premio, indice) => {
+      grilla.appendChild(crearTarjetaPublicada(premio, indice));
+    });
+
+    conectarWhatsApp();
+
+  } catch (error) {
+    // Si el servicio todavía no está disponible,
+    // se mantienen las tarjetas originales.
+  }
+}
+
+cargarPremiosPublicados();
+
+// ==========================================
 // VALIDAR CÓDIGO
+// ==========================================
+
 validateBtn.addEventListener("click", async () => {
   const code = accessCode.value.trim().toUpperCase();
 
@@ -110,7 +206,10 @@ accessCode.addEventListener("input", () => {
   boxInstruction.textContent = "Primero ingresá y validá tu código.";
 });
 
+// ==========================================
 // ABRIR MYSTERY BOX
+// ==========================================
+
 openBox.addEventListener("click", async () => {
   if (!validatedCode || openingInProgress) return;
 
@@ -135,6 +234,7 @@ openBox.addEventListener("click", async () => {
       codeMessage.textContent =
         data.message || "No se pudo abrir la caja.";
       boxInstruction.textContent = "No se pudo completar la apertura.";
+      openBox.disabled = false;
       return;
     }
 
@@ -143,9 +243,19 @@ openBox.addEventListener("click", async () => {
     const description = result.querySelector("p");
 
     title.textContent = "¡FELICITACIONES!";
-    description.textContent =
-      prize.name +
-      (prize.description ? " — " + prize.description : "");
+
+    let textoPremio = prize.name || "Premio sorpresa";
+
+    if (prize.amount !== null && prize.amount !== undefined && prize.amount !== "") {
+      textoPremio += " — $" +
+        Number(prize.amount).toLocaleString("es-AR");
+    }
+
+    if (prize.description) {
+      textoPremio += " — " + prize.description;
+    }
+
+    description.textContent = textoPremio;
 
     result.classList.add("show");
     boxInstruction.textContent = "¡Descubriste tu premio!";
@@ -158,12 +268,16 @@ openBox.addEventListener("click", async () => {
     codeMessage.textContent =
       "Hubo un problema al abrir la caja. Contactá con atención.";
     boxInstruction.textContent = "No se pudo completar la apertura.";
+    openBox.disabled = false;
   } finally {
     openingInProgress = false;
   }
 });
 
+// ==========================================
 // PANEL PRIVADO
+// ==========================================
+
 const panelDialog = document.getElementById("panelDialog");
 const panelBtn = document.getElementById("panelBtn");
 const closePanel = document.getElementById("closePanel");
@@ -180,7 +294,10 @@ if (closePanel && panelDialog) {
   });
 }
 
+// ==========================================
 // ELEMENTOS DEL ADMINISTRADOR
+// ==========================================
+
 const adminLoginForm = document.getElementById("adminLoginForm");
 const adminLoginBtn = document.getElementById("adminLoginBtn");
 const adminLoginMessage = document.getElementById("adminLoginMessage");
@@ -188,23 +305,30 @@ const adminLoginSection = document.getElementById("adminLoginSection");
 const adminDashboard = document.getElementById("adminDashboard");
 
 const newPrizeForm = document.getElementById("newPrizeForm");
+const newFeaturedPrizeForm = document.getElementById("newFeaturedPrizeForm");
 const newCodeForm = document.getElementById("newCodeForm");
 
 const prizeList = document.getElementById("prizeList");
+const featuredPrizeList = document.getElementById("featuredPrizeList");
 const codeList = document.getElementById("codeList");
 const openingList = document.getElementById("openingList");
 
 const prizeMessage = document.getElementById("prizeMessage");
+const featuredPrizeMessage = document.getElementById("featuredPrizeMessage");
 const codeAdminMessage = document.getElementById("codeAdminMessage");
 const adminRefreshMessage = document.getElementById("adminRefreshMessage");
 
 let adminData = {
   prizes: [],
+  featured_prizes: [],
   codes: [],
   openings: []
 };
 
-// FUNCIONES DE CONEXIÓN CON EL PANEL
+// ==========================================
+// CONEXIÓN CON EL PANEL
+// ==========================================
+
 async function manageRequest(method = "GET", body = null) {
   const options = {
     method,
@@ -218,11 +342,7 @@ async function manageRequest(method = "GET", body = null) {
     options.body = JSON.stringify(body);
   }
 
-  const response = await fetch(
-    "/.netlify/functions/manage",
-    options
-  );
-
+  const response = await fetch("/.netlify/functions/manage", options);
   const data = await response.json();
 
   if (!response.ok || !data.success) {
@@ -232,7 +352,10 @@ async function manageRequest(method = "GET", body = null) {
   return data;
 }
 
-// MOSTRAR TEXTO DE FORMA SEGURA
+// ==========================================
+// ELEMENTOS SEGUROS
+// ==========================================
+
 function crearTexto(contenedor, texto, etiqueta = "p") {
   const elemento = document.createElement(etiqueta);
   elemento.textContent = texto == null ? "" : String(texto);
@@ -249,13 +372,33 @@ function crearBoton(texto, accion, id) {
   return boton;
 }
 
+function formatearMonto(monto) {
+  if (monto === null || monto === undefined || monto === "") {
+    return "Sin monto";
+  }
+
+  return "$" + Number(monto).toLocaleString("es-AR");
+}
+
+// ==========================================
 // CARGAR INFORMACIÓN DEL PANEL
+// ==========================================
+
 async function cargarPanel() {
   adminRefreshMessage.textContent = "Actualizando información...";
 
   try {
     adminData = await manageRequest("GET");
+
+    if (!Array.isArray(adminData.prizes)) adminData.prizes = [];
+    if (!Array.isArray(adminData.featured_prizes)) {
+      adminData.featured_prizes = [];
+    }
+    if (!Array.isArray(adminData.codes)) adminData.codes = [];
+    if (!Array.isArray(adminData.openings)) adminData.openings = [];
+
     dibujarPremios();
+    dibujarPremiosPublicados();
     dibujarCodigos();
     dibujarAperturas();
 
@@ -267,12 +410,15 @@ async function cargarPanel() {
   }
 }
 
-// MOSTRAR PREMIOS Y STOCK
+// ==========================================
+// MOSTRAR PREMIOS ALEATORIOS
+// ==========================================
+
 function dibujarPremios() {
   prizeList.replaceChildren();
 
   if (!adminData.prizes.length) {
-    crearTexto(prizeList, "Todavía no hay premios cargados.");
+    crearTexto(prizeList, "Todavía no hay premios aleatorios cargados.");
     return;
   }
 
@@ -281,6 +427,7 @@ function dibujarPremios() {
     tarjeta.className = "admin-prize-item";
 
     crearTexto(tarjeta, premio.name, "h4");
+    crearTexto(tarjeta, "Monto: " + formatearMonto(premio.amount));
     crearTexto(tarjeta, premio.description || "Sin descripción.");
 
     if (premio.image_url) {
@@ -299,19 +446,86 @@ function dibujarPremios() {
       premio.active ? "Estado: Activo" : "Estado: Inactivo"
     );
 
-    tarjeta.appendChild(
-      crearBoton("EDITAR", "edit-prize", premio.id)
-    );
+    tarjeta.appendChild(crearBoton("EDITAR", "edit-prize", premio.id));
 
     tarjeta.appendChild(
-      crearBoton("ELIMINAR", "delete-prize", premio.id)
+      crearBoton(
+        premio.active ? "DESACTIVAR" : "ACTIVAR",
+        "toggle-prize",
+        premio.id
+      )
     );
+
+    tarjeta.appendChild(crearBoton("ELIMINAR", "delete-prize", premio.id));
 
     prizeList.appendChild(tarjeta);
   });
 }
 
+// ==========================================
+// MOSTRAR PREMIOS PUBLICADOS
+// ==========================================
+
+function dibujarPremiosPublicados() {
+  featuredPrizeList.replaceChildren();
+
+  if (!adminData.featured_prizes.length) {
+    crearTexto(
+      featuredPrizeList,
+      "Todavía no hay premios publicados administrados desde el panel."
+    );
+    return;
+  }
+
+  adminData.featured_prizes.forEach((premio) => {
+    const tarjeta = document.createElement("div");
+    tarjeta.className = "admin-prize-item";
+
+    crearTexto(tarjeta, premio.name, "h4");
+    crearTexto(tarjeta, "Monto: " + formatearMonto(premio.amount));
+    crearTexto(tarjeta, premio.description || "Sin descripción.");
+
+    if (premio.image_url) {
+      const imagen = document.createElement("img");
+      imagen.src = premio.image_url;
+      imagen.alt = premio.name || "Imagen del premio";
+      imagen.loading = "lazy";
+      imagen.style.maxWidth = "150px";
+      imagen.style.height = "auto";
+      tarjeta.appendChild(imagen);
+    }
+
+    crearTexto(
+      tarjeta,
+      "Estado: " + (premio.active ? "Publicado" : "Oculto")
+    );
+
+    crearTexto(tarjeta, "Orden: " + Number(premio.sort_order || 0));
+
+    tarjeta.appendChild(
+      crearBoton("EDITAR", "edit-featured", premio.id)
+    );
+
+    tarjeta.appendChild(
+      crearBoton(
+        premio.active ? "OCULTAR" : "PUBLICAR",
+        "toggle-featured",
+        premio.id
+      )
+    );
+
+    tarjeta.appendChild(
+      crearBoton("ELIMINAR", "delete-featured", premio.id)
+    );
+
+    featuredPrizeList.appendChild(tarjeta);
+  });
+}
+
+// ==========================================
 // MOSTRAR CÓDIGOS
+// ==========================================
+
 function dibujarCodigos() {
   codeList.replaceChildren();
 
@@ -345,7 +559,10 @@ function dibujarCodigos() {
   });
 }
 
-// MOSTRAR APERTURAS
+// ==========================================
+// MOSTRAR HISTORIAL DE APERTURAS
+// ==========================================
+
 function dibujarAperturas() {
   openingList.replaceChildren();
 
@@ -378,6 +595,7 @@ function dibujarAperturas() {
 
     if (apertura.opened_at) {
       const fecha = new Date(apertura.opened_at);
+
       crearTexto(
         tarjeta,
         "Fecha: " + (
@@ -392,7 +610,10 @@ function dibujarAperturas() {
   });
 }
 
+// ==========================================
 // INICIO DE SESIÓN DEL ADMINISTRADOR
+// ==========================================
+
 if (adminLoginForm) {
   adminLoginForm.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -406,9 +627,7 @@ if (adminLoginForm) {
     try {
       const response = await fetch("/.netlify/functions/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         credentials: "same-origin",
         body: JSON.stringify({ username, password })
       });
@@ -467,159 +686,26 @@ if (adminLoginForm) {
   });
 }
 
-// AGREGAR PREMIO CON STOCK
+// ==========================================
+// AGREGAR PREMIO ALEATORIO
+// ==========================================
+
 if (newPrizeForm) {
   newPrizeForm.addEventListener("submit", async (event) => {
     event.preventDefault();
 
     const saveButton = document.getElementById("savePrizeBtn");
     const stock = Number(document.getElementById("prizeStock").value);
+    const amountText = document.getElementById("prizeAmount").value.trim();
 
-    if (!Number.isInteger(stock) || stock < 0) {
+    if (!Number.isSafeInteger(stock) || stock < 0) {
       prizeMessage.textContent =
         "Ingresá una cantidad entera igual o mayor a cero.";
       return;
     }
 
-    saveButton.disabled = true;
-    prizeMessage.textContent = "Guardando premio...";
+    const amount = amountText === "" ? null : Number(amountText);
 
-    try {
-      await manageRequest("POST", {
-        action: "create_prize",
-        name: document.getElementById("prizeName").value,
-        description: document.getElementById("prizeDescription").value,
-        image_url: document.getElementById("prizeImage").value,
-        stock
-      });
-
-      newPrizeForm.reset();
-      prizeMessage.textContent = "¡Premio agregado correctamente!";
-      await cargarPanel();
-
-    } catch (error) {
-      prizeMessage.textContent = error.message;
-    } finally {
-      saveButton.disabled = false;
-    }
-  });
-}
-
-// CREAR CÓDIGO SIN ASIGNAR PREMIO
-if (newCodeForm) {
-  newCodeForm.addEventListener("submit", async (event) => {
-    event.preventDefault();
-
-    const createButton = document.getElementById("createCodeBtn");
-    createButton.disabled = true;
-    codeAdminMessage.textContent = "Creando código...";
-
-    try {
-      await manageRequest("POST", {
-        action: "create_code",
-        code: document.getElementById("newCode").value
-      });
-
-      newCodeForm.reset();
-      codeAdminMessage.textContent = "¡Código creado correctamente!";
-      await cargarPanel();
-
-    } catch (error) {
-      codeAdminMessage.textContent = error.message;
-    } finally {
-      createButton.disabled = false;
-    }
-  });
-}
-
-// EDITAR O ELIMINAR PREMIOS
-if (prizeList) {
-  prizeList.addEventListener("click", async (event) => {
-    const boton = event.target.closest("button[data-admin-action]");
-    if (!boton) return;
-
-    const id = boton.dataset.itemId;
-    const accion = boton.dataset.adminAction;
-
-    const premio = adminData.prizes.find(
-      item => String(item.id) === String(id)
-    );
-
-    if (!premio) return;
-
-    boton.disabled = true;
-
-    try {
-      if (accion === "edit-prize") {
-        const name = prompt("Nombre del premio:", premio.name || "");
-        if (name === null) return;
-
-        const description = prompt(
-          "Descripción del premio:",
-          premio.description || ""
-        );
-        if (description === null) return;
-
-        const image_url = prompt(
-          "Enlace de la imagen:",
-          premio.image_url || ""
-        );
-        if (image_url === null) return;
-
-        const stockTexto = prompt(
-          "Cantidad disponible:",
-          String(Number(premio.stock || 0))
-        );
-        if (stockTexto === null) return;
-
-        const stock = Number(stockTexto);
-
-        if (!Number.isInteger(stock) || stock < 0) {
-          prizeMessage.textContent =
-            "El stock debe ser un número entero igual o mayor a cero.";
-          return;
-        }
-
-        await manageRequest("POST", {
-          action: "update_prize",
-          id,
-          name,
-          description,
-          image_url,
-          stock
-        });
-
-        prizeMessage.textContent = "¡Premio actualizado!";
-
-      } else if (accion === "delete-prize") {
-        const confirmar = confirm(
-          "¿Seguro que querés eliminar este premio? Esta acción puede estar limitada si tiene aperturas asociadas."
-        );
-
-        if (!confirmar) return;
-
-        await manageRequest("POST", {
-          action: "delete_prize",
-          id
-        });
-
-        prizeMessage.textContent = "Premio eliminado.";
-      }
-
-      await cargarPanel();
-
-    } catch (error) {
-      prizeMessage.textContent = error.message;
-    } finally {
-      boton.disabled = false;
-    }
-  });
-}
-
-// ACTUALIZAR INFORMACIÓN
-const refreshAdminBtn = document.getElementById("refreshAdminBtn");
-
-if (refreshAdminBtn) {
-  refreshAdminBtn.addEventListener("click", cargarPanel);
-    }
-                                   
+    if (amount !== null && (!Number.isFinite(amount) || amount < 0)) {
+      prizeMessage.textContent = "Ingresá un monto válido.";
+      return;
