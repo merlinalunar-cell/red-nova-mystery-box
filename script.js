@@ -709,3 +709,202 @@ if (newPrizeForm) {
     if (amount !== null && (!Number.isFinite(amount) || amount < 0)) {
       prizeMessage.textContent = "Ingresá un monto válido.";
       return;
+    }
+
+    saveButton.disabled = true;
+    prizeMessage.textContent = "Guardando premio...";
+
+    try {
+      await manageRequest("POST", {
+        action: "create_prize",
+        name: document.getElementById("prizeName").value.trim(),
+        amount,
+        description: document.getElementById("prizeDescription").value.trim(),
+        image_url: document.getElementById("prizeImage").value.trim(),
+        stock
+      });
+
+      newPrizeForm.reset();
+      prizeMessage.textContent = "Premio agregado correctamente.";
+      await cargarPanel();
+    } catch (error) {
+      prizeMessage.textContent = error.message;
+    } finally {
+      saveButton.disabled = false;
+    }
+  });
+}
+
+// AGREGAR PREMIO PUBLICADO
+if (newFeaturedPrizeForm) {
+  newFeaturedPrizeForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const button = document.getElementById("saveFeaturedPrizeBtn");
+    button.disabled = true;
+    featuredPrizeMessage.textContent = "Guardando premio...";
+
+    try {
+      await manageRequest("POST", {
+        action: "create_featured_prize",
+        name: document.getElementById("featuredName").value.trim(),
+        amount: document.getElementById("featuredAmount").value,
+        description: document.getElementById("featuredDescription").value.trim(),
+        image_url: document.getElementById("featuredImage").value.trim(),
+        sort_order: Number(document.getElementById("featuredOrder").value)
+      });
+
+      newFeaturedPrizeForm.reset();
+      featuredPrizeMessage.textContent = "Premio publicado correctamente.";
+      await cargarPanel();
+      cargarPremiosPublicados();
+    } catch (error) {
+      featuredPrizeMessage.textContent = error.message;
+    } finally {
+      button.disabled = false;
+    }
+  });
+}
+
+// CREAR CÓDIGO
+if (newCodeForm) {
+  newCodeForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const button = document.getElementById("createCodeBtn");
+    const code = document.getElementById("newCode").value.trim().toUpperCase();
+
+    button.disabled = true;
+    codeAdminMessage.textContent = "Creando código...";
+
+    try {
+      await manageRequest("POST", {
+        action: "create_code",
+        code
+      });
+
+      newCodeForm.reset();
+      codeAdminMessage.textContent = "Código creado correctamente.";
+      await cargarPanel();
+    } catch (error) {
+      codeAdminMessage.textContent = error.message;
+    } finally {
+      button.disabled = false;
+    }
+  });
+}
+
+// ACCIONES DE LAS TARJETAS DEL PANEL
+async function ejecutarAccionAdmin(event) {
+  const boton = event.target.closest("button[data-admin-action]");
+  if (!boton) return;
+
+  const action = boton.dataset.adminAction;
+  const id = boton.dataset.itemId;
+
+  const premioAleatorio = adminData.prizes.find(p => String(p.id) === String(id));
+  const premioPublicado = adminData.featured_prizes.find(p => String(p.id) === String(id));
+
+  try {
+    boton.disabled = true;
+
+    if (action === "delete-prize" || action === "delete-featured") {
+      if (!confirm("¿Seguro que querés eliminar este premio?")) return;
+
+      await manageRequest("POST", {
+        action: action === "delete-prize" ? "delete_prize" : "delete_featured_prize",
+        id
+      });
+    }
+
+    if (action === "toggle-prize" && premioAleatorio) {
+      await manageRequest("POST", {
+        action: "update_prize",
+        id,
+        active: !premioAleatorio.active
+      });
+    }
+
+    if (action === "toggle-featured" && premioPublicado) {
+      await manageRequest("POST", {
+        action: "update_featured_prize",
+        id,
+        active: !premioPublicado.active
+      });
+    }
+
+    if (action === "edit-prize" && premioAleatorio) {
+      const name = prompt("Nombre del premio:", premioAleatorio.name);
+      if (name === null) return;
+
+      const amount = prompt("Monto (dejá vacío si no tiene):", premioAleatorio.amount ?? "");
+      if (amount === null) return;
+
+      const stock = prompt("Cantidad disponible:", premioAleatorio.stock);
+      if (stock === null) return;
+
+      const description = prompt("Descripción:", premioAleatorio.description || "");
+      if (description === null) return;
+
+      const image_url = prompt("Enlace de imagen:", premioAleatorio.image_url || "");
+      if (image_url === null) return;
+
+      await manageRequest("POST", {
+        action: "update_prize",
+        id,
+        name,
+        amount,
+        stock,
+        description,
+        image_url
+      });
+    }
+
+    if (action === "edit-featured" && premioPublicado) {
+      const name = prompt("Nombre del premio:", premioPublicado.name);
+      if (name === null) return;
+
+      const amount = prompt("Monto:", premioPublicado.amount ?? "");
+      if (amount === null) return;
+
+      const description = prompt("Descripción:", premioPublicado.description || "");
+      if (description === null) return;
+
+      const image_url = prompt("Enlace de imagen:", premioPublicado.image_url || "");
+      if (image_url === null) return;
+
+      const sort_order = prompt("Orden:", premioPublicado.sort_order ?? 0);
+      if (sort_order === null) return;
+
+      await manageRequest("POST", {
+        action: "update_featured_prize",
+        id,
+        name,
+        amount,
+        description,
+        image_url,
+        sort_order
+      });
+
+      cargarPremiosPublicados();
+    }
+
+    await cargarPanel();
+  } catch (error) {
+    alert(error.message);
+  } finally {
+    boton.disabled = false;
+  }
+}
+
+[prizeList, featuredPrizeList].forEach((lista) => {
+  lista.addEventListener("click", ejecutarAccionAdmin);
+});
+
+// ACTUALIZAR PANEL
+const refreshAdminBtn = document.getElementById("refreshAdminBtn");
+
+if (refreshAdminBtn) {
+  refreshAdminBtn.addEventListener("click", cargarPanel);
+        }
+        
