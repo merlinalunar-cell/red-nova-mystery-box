@@ -1,3 +1,4 @@
+
 export default async (request) => {
   const headers = {
     "Content-Type": "application/json",
@@ -338,8 +339,7 @@ export default async (request) => {
       }), { status: 200, headers });
     }
 
-
-    // GENERAR VARIOS CÓDIGOS AUTOMÁTICOS SIN PREMIO ASIGNADO
+    // GENERAR VARIOS CÓDIGOS AUTOMÁTICOS
     if (body.action === "generate_codes") {
       const quantity = Number(body.quantity);
 
@@ -351,7 +351,7 @@ export default async (request) => {
       const generatedCodes = [];
 
       for (let i = 0; i < quantity; i++) {
-        const bytes = new Uint8Array(10);
+        const bytes = new Uint8Array(12);
         globalThis.crypto.getRandomValues(bytes);
 
         let code = "RN-";
@@ -377,7 +377,22 @@ export default async (request) => {
         codes: createdCodes
       }), { status: 200, headers });
     }
-    
+
+    // CREAR CÓDIGO MANUAL
+    if (body.action === "create_code") {
+      const code = String(body.code || "").trim().toUpperCase();
+
+      if (!code) {
+        throw new Error("Ingresá un código.");
+      }
+
+      const createdCode = await database("mystery_codes", {
+        method: "POST",
+        body: JSON.stringify({
+          code,
+          status: "available"
+        })
+      });
 
       return new Response(JSON.stringify({
         success: true,
@@ -385,6 +400,7 @@ export default async (request) => {
       }), { status: 200, headers });
     }
 
+    // OPERACIÓN DESCONOCIDA
     return new Response(JSON.stringify({
       success: false,
       message: "Operación desconocida."
@@ -398,4 +414,4 @@ export default async (request) => {
     }), { status: 500, headers });
   }
 };
-        
+          
