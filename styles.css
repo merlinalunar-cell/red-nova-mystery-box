@@ -404,3 +404,57 @@ dialog{width:min(90%,420px);border:1px solid #4ceaff;border-radius:18px;backgrou
     padding: 20px 16px;
   }
 }
+/* =====================================
+   RED NOVA - LOGO SUPERIOR Y FONDO
+   ===================================== */
+
+/* LOGO PRINCIPAL */
+
+.hero-logo {
+  display: block;
+  width: 100%;
+  max-width: 300px;
+  max-height: 390px;
+  height: auto;
+  object-fit: contain;
+  margin: 0 auto 22px;
+  border: 1px solid #35eaff88;
+  border-radius: 18px;
+  box-shadow:
+    0 0 18px #00cfff88,
+    0 0 40px #075dff66;
+}
+
+/* LOGO COMO MARCA DE AGUA DE FONDO */
+
+body {
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: url("red-nova-logo.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: min(70vw, 650px) auto;
+  opacity: 0.10;
+}
+
+/* AJUSTES PARA CELULARES */
+
+@media (max-width: 760px) {
+  .hero-logo {
+    max-width: 230px;
+    max-height: 310px;
+    margin: 0 auto 20px;
+  }
+
+  body::before {
+    background-size: min(90vw, 430px) auto;
+    opacity: 0.09;
+  }
+}
