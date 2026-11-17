@@ -186,7 +186,7 @@ validateBtn.addEventListener("click", async () => {
     boxInstruction.textContent = "¡Tu sorpresa está lista!";
     openBox.disabled = false;
     openBox.classList.add("enabled");
-
+openBox.click();
   } catch (error) {
     codeMessage.textContent =
       "No pudimos conectar con el sistema. Intentá nuevamente.";
