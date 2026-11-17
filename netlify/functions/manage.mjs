@@ -338,21 +338,46 @@ export default async (request) => {
       }), { status: 200, headers });
     }
 
-    // CREAR CÓDIGO SIN PREMIO ASIGNADO
-    if (body.action === "create_code") {
-      const code = String(body.code || "").trim().toUpperCase();
 
-      if (!code) {
-        throw new Error("Ingresá un código.");
+    // GENERAR VARIOS CÓDIGOS AUTOMÁTICOS SIN PREMIO ASIGNADO
+    if (body.action === "generate_codes") {
+      const quantity = Number(body.quantity);
+
+      if (!Number.isSafeInteger(quantity) || quantity < 1 || quantity > 500) {
+        throw new Error("Elegí una cantidad entre 1 y 500 códigos.");
       }
 
-      const createdCode = await database("mystery_codes", {
-        method: "POST",
-        body: JSON.stringify({
+      const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+      const generatedCodes = [];
+
+      for (let i = 0; i < quantity; i++) {
+        const bytes = new Uint8Array(10);
+        globalThis.crypto.getRandomValues(bytes);
+
+        let code = "RN-";
+
+        for (const byte of bytes) {
+          code += alphabet[byte % alphabet.length];
+        }
+
+        generatedCodes.push({
           code,
           status: "available"
-        })
+        });
+      }
+
+      const createdCodes = await database("mystery_codes", {
+        method: "POST",
+        body: JSON.stringify(generatedCodes)
       });
+
+      return new Response(JSON.stringify({
+        success: true,
+        quantity: createdCodes.length,
+        codes: createdCodes
+      }), { status: 200, headers });
+    }
+    
 
       return new Response(JSON.stringify({
         success: true,
